@@ -10,14 +10,16 @@ include_directories(${PROJECT_SOURCE_DIR}/${GOOGLE_MOCK_RELATIVE}/googlemock/inc
 		    ${PROJECT_SOURCE_DIR}/${GOOGLE_MOCK_RELATIVE}/googletest/include)
 
 set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/source)
+set(PRIVATE_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 ENABLE_TESTING()
 
-set(TESTNAMES smsPlanner_test1)
+set(TESTNAMES smsPlanner_test1 timeKeeper_test1 smsSender_test1)
 
 foreach(testname ${TESTNAMES})
 	add_executable(${testname} ${SRC_DIR}/${testname}.cpp)
 	target_link_libraries(${testname} gmock_main module1)
+	target_include_directories(${testname} PRIVATE ${PRIVATE_INCLUDE_DIR})
 	add_dependencies(${testname} module1)
 
 	install(TARGETS ${testname}
