@@ -127,3 +127,45 @@ TEST_F(smsPlanner_test1, sendAllSuccess)
 
 	EXPECT_TRUE(planner_mock->sendAll());
 }
+
+TEST_F(smsPlanner_test1, notSendTwoTimes)
+{
+	EXPECT_CALL(*keeper_mock, getTimeValid(_)).WillRepeatedly(Return(true));
+
+	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 1"), time(NULL));
+	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 2"), time(NULL));
+	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 3"), time(NULL));
+
+	EXPECT_CALL(*sender_mock, send(_, _)).WillRepeatedly(Return(true));
+
+	planner_mock->sendAll();
+
+	EXPECT_CALL(*sender_mock, send(_, _)).Times(0);
+
+	EXPECT_TRUE(planner_mock->sendAll());
+}
+
+TEST_F(smsPlanner_test1, notSendCanceled)
+{
+	EXPECT_CALL(*keeper_mock, getTimeValid(_)).WillRepeatedly(Return(true));
+
+	int id = planner_mock->addDelivery(std::string("537240688"), std::string("Hello 1"), time(NULL));
+	planner->cancelDelivery(id);
+	
+	EXPECT_CALL(*sender_mock, send(_, _)).Times(0);
+
+	EXPECT_TRUE(planner_mock->sendAll());
+}
+
+TEST_F(smsPlanner_test1, notCancelAfterSend)
+{
+	EXPECT_CALL(*keeper_mock, getTimeValid(_)).WillRepeatedly(Return(true));
+
+	int id = planner_mock->addDelivery(std::string("537240688"), std::string("Hello"), time(NULL));
+	
+	EXPECT_CALL(*sender_mock, send(_, _)).WillRepeatedly(Return(true));
+
+	planner_mock->sendAll();
+
+	EXPECT_FALSE(planner->cancelDelivery(id));
+}

@@ -45,6 +45,7 @@ bool smsPlanner::sendAll()
 		{
 			return false;
 		}
+		contents.erase(it);
 	}
 	return true;
 }
