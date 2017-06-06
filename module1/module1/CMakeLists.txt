@@ -2,6 +2,9 @@ cmake_minimum_required (VERSION 3.3)
 
 project(module1)
 
+set(CMAKE_C_FLAGS "-pthread -lrt -g -O0 --coverage")
+set(CMAKE_CXX_FLAGS "-pthread -lrt -std=c++11 -g -O0 --coverage")
+
 set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/source)
 set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/public)
 set(PRIVATE_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
