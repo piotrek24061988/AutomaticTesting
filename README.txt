@@ -3,7 +3,7 @@ build steps:
 2) cd out  - go to this directory
 3) cmake ../module1  - execute cmake to create project makefiles
 4) make  - build project
-5) make install DESTDIR=out  - install build output under out directory 
+5) make install DESTDIR=${PWD}/out  - install build output under out directory 
 
 post build steps
 6) export LD_LIBRARY_PATH=out/usr/local/lib/  - export dynamic libraries from project build output
