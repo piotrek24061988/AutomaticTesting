@@ -11,16 +11,6 @@ add_subdirectory(${GOOGLE_MOCK_RELATIVE} ${CMAKE_BINARY_DIR}/cmake/googlemock)
 include_directories(${PROJECT_SOURCE_DIR}/${GOOGLE_MOCK_RELATIVE}/googlemock/include
 		    ${PROJECT_SOURCE_DIR}/${GOOGLE_MOCK_RELATIVE}/googletest/include)
 
-#Add cppunit engine
-include (ExternalProject)
-set(CPP_UNIT_RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/../cppunit)
-ExternalProject_Add(cppunit
-    SOURCE_DIR ${CPP_UNIT_RELATIVE}/src
-    UPDATE_COMMAND ${CPP_UNIT_RELATIVE}/autogen.sh
-    CONFIGURE_COMMAND ${CPP_UNIT_RELATIVE}/configure CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER}
-    BUILD_COMMAND make
-    INSTALL_COMMAND make install)
-
 set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/source)
 set(PRIVATE_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
