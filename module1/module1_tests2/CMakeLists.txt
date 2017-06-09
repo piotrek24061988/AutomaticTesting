@@ -15,6 +15,10 @@ ExternalProject_Add(cppunit
     BUILD_COMMAND make
     INSTALL_COMMAND make install)
 
+#Add google mock engine
+set(GOOGLE_MOCK_RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/../googletest)
+include_directories(${PROJECT_SOURCE_DIR}/${GOOGLE_MOCK_RELATIVE}/googlemock/include)
+
 add_library(cppunit_shared SHARED IMPORTED GLOBAL)
 set_property(TARGET cppunit_shared PROPERTY IMPORTED_LOCATION ${CMAKE_INSTALL_PREFIX}/lib/libcppunit.so)
 add_dependencies(cppunit_shared cppunit)
@@ -27,13 +31,17 @@ include_directories(${PROJECT_SOURCE_DIR}/${CPP_UNIT_RELATIVE}/include)
 set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/source)
 set(PRIVATE_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-set(TESTNAME smsPlanner_test2)
+set(TESTNAMES smsPlanner_test2 timeKeeper_test2 smsSender_test2)
 
-add_executable(${TESTNAME} ${SRC_DIR}/main.cpp)
-add_dependencies(${TESTNAME} module1 cppunit_shared)
-target_link_libraries(${TESTNAME} cppunit_shared module1)
-target_include_directories(${TESTNAME} PRIVATE ${PRIVATE_INCLUDE_DIR})
+foreach(testname ${TESTNAMES})
 
-install(TARGETS ${TESTNAME}
-EXPORT ${TESTNAME}-targets
-RUNTIME DESTINATION  bin COMPONENT bin)
+	add_executable(${testname} ${SRC_DIR}/${testname}.cpp)
+	target_link_libraries(${testname} cppunit_shared gmock_main module1)
+	target_include_directories(${testname} PRIVATE ${PRIVATE_INCLUDE_DIR})
+	add_dependencies(${testname} cppunit_shared module1)
+
+	install(TARGETS ${testname}
+    	EXPORT ${testname}-targets
+    	RUNTIME DESTINATION  bin COMPONENT bin)
+
+endforeach(testname)
