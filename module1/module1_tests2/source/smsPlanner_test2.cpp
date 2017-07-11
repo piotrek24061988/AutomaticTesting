@@ -25,7 +25,6 @@ public:
         void addDeliveryNoError();
 	void addDeliveryRetDiffId();
 	void cancelDeliveries();
-	void validTimeTrue();
 	void nonValidTimeFalse();
 	void sendAllSuccess();
 	void notSendTwoTimes();
@@ -37,7 +36,6 @@ public:
 	CPPUNIT_TEST(addDeliveryNoError);
 	CPPUNIT_TEST(addDeliveryRetDiffId);
 	CPPUNIT_TEST(cancelDeliveries);
-	CPPUNIT_TEST(validTimeTrue);
 	CPPUNIT_TEST(nonValidTimeFalse);
 	CPPUNIT_TEST(sendAllSuccess);
 	CPPUNIT_TEST(notSendTwoTimes);
@@ -108,64 +106,69 @@ void smsPlanner_test2::tearDown()
 	}
 }
 
+//Insert sms to queue and check if was accepted and has a proper id in queue. 
 void smsPlanner_test2::addDeliveryNoError()
 {
-	CPPUNIT_ASSERT(-1 != planner->addDelivery(std::string("537240688"), std::string("Hello"), time(NULL) + 60));
+        EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(1).WillOnce(Return(true));
+
+	CPPUNIT_ASSERT(-1 != planner_mock->addDelivery(std::string("537240688"), std::string("Hello"), time(NULL) + 60));
 }
 
+//Insert 2 smses to queue and check if accepted and have different ids in queue. 
 void smsPlanner_test2::addDeliveryRetDiffId()
 {
-	int id = planner->addDelivery(std::string("537240688"), std::string("Hello"), time(NULL) + 60);
-	CPPUNIT_ASSERT(id != planner->addDelivery(std::string("537240688"), std::string("Hello"), time(NULL) + 60));
+        EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(2).WillRepeatedly(Return(true));
+
+	int id = planner_mock->addDelivery(std::string("537240688"), std::string("Hello"), time(NULL) + 60);
+	CPPUNIT_ASSERT(id != planner_mock->addDelivery(std::string("537240688"), std::string("Hello"), time(NULL) + 60));
 }
 
+//Insert 2 smses to queue and remove them by cancel mechanism and check if it works. 
 void smsPlanner_test2::cancelDeliveries()
 {
-	int id1 = planner->addDelivery(std::string("537240688"), std::string("Hello"), time(NULL) + 60);
-	int id2 = planner->addDelivery(std::string("537240688"), std::string("Hello 2"), time(NULL) + 60);
-	CPPUNIT_ASSERT(true == planner->cancelDelivery(id1));
-	CPPUNIT_ASSERT(false == planner->cancelDelivery(id1));	
-	CPPUNIT_ASSERT(true == planner->cancelDelivery(id2));
-	CPPUNIT_ASSERT(false == planner->cancelDelivery(id2));
+        EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(2).WillRepeatedly(Return(true));
+
+	int id1 = planner_mock->addDelivery(std::string("537240688"), std::string("Hello"), time(NULL) + 60);
+	int id2 = planner_mock->addDelivery(std::string("537240688"), std::string("Hello 2"), time(NULL) + 60);
+	CPPUNIT_ASSERT(true == planner_mock->cancelDelivery(id1));
+	CPPUNIT_ASSERT(false == planner_mock->cancelDelivery(id1));	
+	CPPUNIT_ASSERT(true == planner_mock->cancelDelivery(id2));
+	CPPUNIT_ASSERT(false == planner_mock->cancelDelivery(id2));
 }
 
-void smsPlanner_test2::validTimeTrue()
-{
-	std::time_t sendTime = time(NULL) + 60;
-	EXPECT_CALL(*keeper_mock, getTimeValid(sendTime)).WillOnce(Return(true));
-	CPPUNIT_ASSERT(-1 != planner_mock->addDelivery(std::string("537240688"), std::string("Hello"), sendTime));
-}
-
+//Verify that there is no possibility to insert sms with wrong time to queue.
 void smsPlanner_test2::nonValidTimeFalse()
 {
 	std::time_t sendTime = time(NULL);
-	EXPECT_CALL(*keeper_mock, getTimeValid(sendTime)).WillOnce(Return(false));
+	EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(1).WillOnce(Return(false));
 
 	CPPUNIT_ASSERT(-1 == planner_mock->addDelivery(std::string("537240688"), std::string("Hello"), sendTime));
 }
 
+//Verify that sending smses from queue mechanism is working.
 void smsPlanner_test2::sendAllSuccess()
 {
-	EXPECT_CALL(*keeper_mock, getTimeValid(_)).WillRepeatedly(Return(true));
+	EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(3).WillRepeatedly(Return(true));
 
-	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 1"), time(NULL));
-	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 2"), time(NULL));
-	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 3"), time(NULL));
+	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 1"), time(NULL) + 60);
+	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 2"), time(NULL) + 60);
+	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 3"), time(NULL) + 60);
 
-	EXPECT_CALL(*sender_mock, send(_, _)).WillRepeatedly(Return(true));
+        EXPECT_CALL(*sender_mock, send(_, _)).Times(3).WillRepeatedly(Return(true));
 
 	CPPUNIT_ASSERT(planner_mock->sendAll());
 }
 
+//Verify that it is not possible to send the same sms two times.
 void smsPlanner_test2::notSendTwoTimes()
 {
-	EXPECT_CALL(*keeper_mock, getTimeValid(_)).WillRepeatedly(Return(true));
+	EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(3).WillRepeatedly(Return(true));
 
-	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 1"), time(NULL));
-	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 2"), time(NULL));
-	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 3"), time(NULL));
+	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 1"), time(NULL) + 60);
+	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 2"), time(NULL) + 60);
+	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 3"), time(NULL) + 60);
 
-	EXPECT_CALL(*sender_mock, send(_, _)).WillRepeatedly(Return(true));
+	EXPECT_CALL(*sender_mock, send(_, _)).Times(3).WillRepeatedly(Return(true));
 
 	planner_mock->sendAll();
 
@@ -174,29 +177,31 @@ void smsPlanner_test2::notSendTwoTimes()
 	CPPUNIT_ASSERT(planner_mock->sendAll());
 }
 
+//Verify that smses removed from queue with cancel mechanism will not be send.
 void smsPlanner_test2::notSendCanceled()
 {
 	EXPECT_CALL(*keeper_mock, getTimeValid(_)).WillRepeatedly(Return(true));
 
-	int id = planner_mock->addDelivery(std::string("537240688"), std::string("Hello 1"), time(NULL));
-	planner->cancelDelivery(id);
+	int id = planner_mock->addDelivery(std::string("537240688"), std::string("Hello 1"), time(NULL) + 60);
+	planner_mock->cancelDelivery(id);
 	
 	EXPECT_CALL(*sender_mock, send(_, _)).Times(0);
 
 	CPPUNIT_ASSERT(planner_mock->sendAll());
 }
 
+//Verify that it is not possible to cancel sms after send.
 void smsPlanner_test2::notCancelAfterSend()
 {
-	EXPECT_CALL(*keeper_mock, getTimeValid(_)).WillRepeatedly(Return(true));
+	EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(1).WillOnce(Return(true));
 
-	int id = planner_mock->addDelivery(std::string("537240688"), std::string("Hello"), time(NULL));
+	int id = planner_mock->addDelivery(std::string("537240688"), std::string("Hello"), time(NULL) + 60);
 	
-	EXPECT_CALL(*sender_mock, send(_, _)).WillRepeatedly(Return(true));
+	EXPECT_CALL(*sender_mock, send(_, _)).Times(1).WillOnce(Return(true));
 
 	planner_mock->sendAll();
 
-	CPPUNIT_ASSERT(false == planner->cancelDelivery(id));
+	CPPUNIT_ASSERT(false == planner_mock->cancelDelivery(id));
 }
 
 int main(int argc, char * argv[])

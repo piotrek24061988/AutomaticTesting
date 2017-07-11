@@ -10,7 +10,7 @@ public:
 	~smsSender();
 
 	//Send sms with the message to the tel number.
-	bool send(std::string number, std::string message);
+	virtual bool send(std::string number, std::string message);
 };
 
 #endif //_smsSender_hpp
