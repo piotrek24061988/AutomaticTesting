@@ -1,5 +1,3 @@
-WARNING!!! Works only for root right now WARNING!!!
-
 build steps:
 1) mkdir out  - create cmake output directory
 2) cd out  - go to this directory
