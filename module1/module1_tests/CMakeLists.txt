@@ -8,8 +8,8 @@ set(CMAKE_CXX_FLAGS "-pthread -lrt -std=c++11")
 #Add google mock/test engine
 set(GOOGLE_MOCK_RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/../googletest)
 add_subdirectory(${GOOGLE_MOCK_RELATIVE} ${CMAKE_BINARY_DIR}/cmake/googlemock)
-include_directories(${PROJECT_SOURCE_DIR}/${GOOGLE_MOCK_RELATIVE}/googlemock/include
-		    ${PROJECT_SOURCE_DIR}/${GOOGLE_MOCK_RELATIVE}/googletest/include)
+include_directories(${GOOGLE_MOCK_RELATIVE}/googlemock/include
+		    ${GOOGLE_MOCK_RELATIVE}/googletest/include)
 
 set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/source)
 set(PRIVATE_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)

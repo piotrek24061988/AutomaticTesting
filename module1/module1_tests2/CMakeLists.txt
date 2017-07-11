@@ -17,7 +17,8 @@ ExternalProject_Add(cppunit
 
 #Add google mock engine
 set(GOOGLE_MOCK_RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/../googletest)
-include_directories(${PROJECT_SOURCE_DIR}/${GOOGLE_MOCK_RELATIVE}/googlemock/include)
+include_directories(${GOOGLE_MOCK_RELATIVE}/googlemock/include
+		    ${GOOGLE_MOCK_RELATIVE}/googletest/include)
 
 add_library(cppunit_shared SHARED IMPORTED GLOBAL)
 set_property(TARGET cppunit_shared PROPERTY IMPORTED_LOCATION ${CMAKE_INSTALL_PREFIX}/lib/libcppunit.so)
@@ -26,7 +27,7 @@ add_library(cppunit_static STATIC IMPORTED GLOBAL)
 set_property(TARGET cppunit_static PROPERTY IMPORTED_LOCATION ${CMAKE_INSTALL_PREFIX}/lib/libcppunit.a)
 add_dependencies(cppunit_static cppunit)
 
-include_directories(${PROJECT_SOURCE_DIR}/${CPP_UNIT_RELATIVE}/include)
+include_directories(${CPP_UNIT_RELATIVE}/include)
 
 set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/source)
 set(PRIVATE_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
