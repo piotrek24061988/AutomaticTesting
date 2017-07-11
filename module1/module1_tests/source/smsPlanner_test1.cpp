@@ -81,7 +81,11 @@ protected:
 //Insert sms to queue and check if was accepted and has a proper id in queue. 
 TEST_F(smsPlanner_test1, addDeliveryNoError)
 {
+#ifdef IntegrationTests
+	EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(1);
+#else
         EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(1).WillOnce(Return(true));
+#endif
 
 	EXPECT_NE(-1, planner_mock->addDelivery(std::string("537240688"), std::string("Hello"), time(NULL) + 60));
 }
@@ -89,7 +93,11 @@ TEST_F(smsPlanner_test1, addDeliveryNoError)
 //Insert 2 smses to queue and check if accepted and have different ids in queue. 
 TEST_F(smsPlanner_test1, addDeliveryRetDiffId)
 {
+#ifdef IntegrationTests
+	EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(2);
+#else
         EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(2).WillRepeatedly(Return(true));
+#endif
 
 	int id = planner_mock->addDelivery(std::string("537240688"), std::string("Hello"), time(NULL) + 60);
 	EXPECT_NE(id, planner_mock->addDelivery(std::string("537240688"), std::string("Hello"), time(NULL) + 60));
@@ -98,7 +106,11 @@ TEST_F(smsPlanner_test1, addDeliveryRetDiffId)
 //Insert 2 smses to queue and remove them by cancel mechanism and check if it works. 
 TEST_F(smsPlanner_test1, cancelDeliveries)
 {
+#ifdef IntegrationTests
+	EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(2);
+#else
         EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(2).WillRepeatedly(Return(true));
+#endif
 
 	int id1 = planner_mock->addDelivery(std::string("537240688"), std::string("Hello"), time(NULL) + 60);
 	int id2 = planner_mock->addDelivery(std::string("537240688"), std::string("Hello 2"), time(NULL) + 60);
@@ -112,32 +124,33 @@ TEST_F(smsPlanner_test1, cancelDeliveries)
 TEST_F(smsPlanner_test1, nonValidTimeFalse)
 {
 	std::time_t sendTime = time(NULL);
+#ifdef IntegrationTests
+	EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(1);
+#else
 	EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(1).WillOnce(Return(false));
+#endif
 
 	EXPECT_EQ(-1, planner_mock->addDelivery(std::string("537240688"), std::string("Hello"), sendTime));
 }
 
-/*
-//Proposal for integration tests to be done in future
-TEST_F(smsPlanner_test1, nonValidTimeFalse)
-{
-	std::time_t sendTime = time(NULL);
-	EXPECT_CALL(*keeper, getTimeValid(sendTime)).Times(1).WillOnce(Return(false));
-
-	EXPECT_EQ(-1, planner->addDelivery(std::string("537240688"), std::string("Hello"), sendTime));
-}
-*/
-
 //Verify that sending smses from queue mechanism is working.
 TEST_F(smsPlanner_test1, sendAllSuccess)
 {
+#ifdef IntegrationTests
+	EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(3);
+#else
 	EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(3).WillRepeatedly(Return(true));
+#endif
 
 	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 1"), time(NULL) + 60);
 	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 2"), time(NULL) + 60);
 	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 3"), time(NULL) + 60);
 
+#ifdef IntegrationTests
+	EXPECT_CALL(*sender_mock, send(_, _)).Times(3);
+#else
         EXPECT_CALL(*sender_mock, send(_, _)).Times(3).WillRepeatedly(Return(true));
+#endif
 
 	EXPECT_TRUE(planner_mock->sendAll());
 }
@@ -145,13 +158,21 @@ TEST_F(smsPlanner_test1, sendAllSuccess)
 //Verify that it is not possible to send the same sms two times.
 TEST_F(smsPlanner_test1, notSendTwoTimes)
 {
+#ifdef IntegrationTests
+	EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(3);
+#else
 	EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(3).WillRepeatedly(Return(true));
+#endif
 
 	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 1"), time(NULL) + 60);
 	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 2"), time(NULL) + 60);
 	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 3"), time(NULL) + 60);
 
+#ifdef IntegrationTests
+	EXPECT_CALL(*sender_mock, send(_, _)).Times(3);
+#else
 	EXPECT_CALL(*sender_mock, send(_, _)).Times(3).WillRepeatedly(Return(true));
+#endif
 
 	planner_mock->sendAll();
 
@@ -163,7 +184,11 @@ TEST_F(smsPlanner_test1, notSendTwoTimes)
 //Verify that smses removed from queue with cancel mechanism will not be send.
 TEST_F(smsPlanner_test1, notSendCanceled)
 {
+#ifdef IntegrationTests
+	EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(1);
+#else
 	EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(1).WillOnce(Return(true));
+#endif
 
 	int id = planner_mock->addDelivery(std::string("537240688"), std::string("Hello 1"), time(NULL) + 60);
 	planner_mock->cancelDelivery(id);
@@ -176,11 +201,19 @@ TEST_F(smsPlanner_test1, notSendCanceled)
 //Verify that it is not possible to cancel sms after send.
 TEST_F(smsPlanner_test1, notCancelAfterSend)
 {
+#ifdef IntegrationTests
+	EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(1);
+#else
 	EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(1).WillOnce(Return(true));
+#endif
 
 	int id = planner_mock->addDelivery(std::string("537240688"), std::string("Hello"), time(NULL) + 60);
-	
+
+#ifdef IntegrationTests
+	EXPECT_CALL(*sender_mock, send(_, _)).Times(1);
+#else
 	EXPECT_CALL(*sender_mock, send(_, _)).Times(1).WillOnce(Return(true));
+#endif
 
 	planner_mock->sendAll();
 
