@@ -30,6 +30,7 @@ compile:
         
 test:
     override:
+        - export LD_LIBRARY_PATH=/usr/local/lib/
         - timeKeeper_test1 
         - timeKeeper_test2 
         - smsSender_test1
