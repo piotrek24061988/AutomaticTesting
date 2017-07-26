@@ -1,8 +1,9 @@
  version: 2
  jobs:
-   machine:
+   dependencies:
      pre:
-       - apt-get install cmake
+       - sudo apt-get update; sudo apt-get cmake
+   machine:
    build:
      steps:
        - checkout
