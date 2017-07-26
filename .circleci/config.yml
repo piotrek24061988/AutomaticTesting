@@ -1,8 +1,6 @@
 version: 2
 jobs:
    build:
-     docker:
-       - image: circleci/<c++>:<11>
      steps:
        - checkout
        - run: echo "hello world"
