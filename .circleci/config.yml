@@ -2,7 +2,8 @@
  jobs:
    dependencies:
      pre:
-       - sudo apt-get update; sudo apt-get cmake
+       - sudo apt-get update
+       - sudo apt-get cmake
    machine:
    build:
      steps:
