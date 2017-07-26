@@ -3,8 +3,8 @@ dependencies:
         - wget https://cmake.org/files/v3.9/cmake-3.9.0-rc5.tar.gz
         - tar xzvf cmake-3.9.0-rc5.tar.gz
         - cmake ./cmake-3.9.0-rc5/
-        - make      
-        - make install
+        - sudo make      
+        - sudo make install
 compile:
     override:
         - cmake ./module1
