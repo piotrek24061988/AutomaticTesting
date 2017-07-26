@@ -1,6 +1,8 @@
 version: 2
 jobs:
-  checkout:
-    post:
-      - git submodule sync
-      - git submodule update --init --recursive
+   build:
+     docker:
+       - image: circleci/<c++>:<11>
+     steps:
+       - checkout
+       - run: echo "hello world"
