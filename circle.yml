@@ -5,10 +5,7 @@ dependencies:
         
 compile:
     override:
-        - cd module1
-        - mkdir out
-        - cd out
-        - cmake ..
+        - cmake ./module1
         
 test:
     override:
