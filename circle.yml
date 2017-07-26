@@ -27,10 +27,11 @@ compile:
         - cmake ./module1
         - sudo make 
         - sudo make install
+        - sudo export LD_LIBRARY_PATH=${LIBDIR}:${LD_LIBRARY_PATH}
         
 test:
     override:
-        - export LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH}
+        - sudo export LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH}
         - sudo timeKeeper_test1 
         - sudo timeKeeper_test2 
         - sudo smsSender_test1
