@@ -27,7 +27,9 @@ compile:
         - cmake ./module1
         - sudo make 
         - sudo make install
-        - export LD_LIBRARY_PATH=${LIBDIR}:${LD_LIBRARY_PATH}
+        - mkdir out
+        - sudo make install DESTDIR=out 
+        - export LD_LIBRARY_PATH=out/usr/local/lib/
         
 test:
     override:
