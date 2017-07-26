@@ -29,7 +29,7 @@ compile:
         - sudo make install
         - mkdir out
         - sudo make install DESTDIR=${PWD}/out 
-        - export LD_LIBRARY_PATH=out/usr/local/lib/
+        - export LD_LIBRARY_PATH=${PWD}/out/usr/local/lib/
         
 test:
     override:
