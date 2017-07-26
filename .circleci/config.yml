@@ -1,6 +1,9 @@
 version: 2
 jobs:
-   build:
-     steps:
-       - checkout
-       - run: echo "hello world"
+  machine:
+    services:
+    - docker
+  build:
+    steps:
+      - checkout
+      - run: echo "hello world"
