@@ -1,9 +1,8 @@
 version: 2
-jobs:
-  machine:
-    services:
-    - docker
-  build:
-    steps:
-      - checkout
-      - run: echo "hello world"
+dependencies:
+    pre:
+        - sudo apt-get install autoconf-archive automake-1.14 autoconf2.59 build-essential check
+test:
+    pre:
+        - cmake .
+    override:
