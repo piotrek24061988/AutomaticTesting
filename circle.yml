@@ -20,7 +20,7 @@ dependencies:
         - sudo apt-get update
         - sudo apt-get install autoconf
         # installing autotools
-        - sudo apt-get install utotools-dev
+        - sudo apt-get install autotools-dev
         
 compile:
     override:
