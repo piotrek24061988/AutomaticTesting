@@ -5,8 +5,11 @@ dependencies:
         
 compile:
     override:
-        - cmake .
-
+        - cd module1
+        - mkdir out
+        - cd out
+        - cmake ..
+        
 test:
     override:
         - echo "hello world"
