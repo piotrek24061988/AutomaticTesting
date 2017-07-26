@@ -25,7 +25,8 @@ dependencies:
 compile:
     override:
         - cmake ./module1
-        - sudo make install DESTDIR=${PWD}/out
+        - make DESTDIR=${PWD}/out 
+        - make install DESTDIR=${PWD}/out
         
 test:
     override:
