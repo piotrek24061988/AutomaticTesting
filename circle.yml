@@ -28,7 +28,7 @@ compile:
         - sudo make 
         - sudo make install
         - mkdir out
-        - sudo make install DESTDIR=out 
+        - sudo make install DESTDIR=${PWD}/out 
         - export LD_LIBRARY_PATH=out/usr/local/lib/
         
 test:
