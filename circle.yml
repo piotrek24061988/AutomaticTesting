@@ -30,4 +30,9 @@ compile:
         
 test:
     override:
-        - echo "hello world"
+        - timeKeeper_test1 
+        - timeKeeper_test2 
+        - smsSender_test1
+        - smsSender_test2
+        - smsPlanner_test1
+        - smsPlanner_test2
