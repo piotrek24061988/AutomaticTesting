@@ -30,10 +30,9 @@ compile:
         
 test:
     override:
-        - export LD_LIBRARY_PATH=/usr/local/lib/
-        - timeKeeper_test1 
-        - timeKeeper_test2 
-        - smsSender_test1
-        - smsSender_test2
-        - smsPlanner_test1
-        - smsPlanner_test2
+        - sudo timeKeeper_test1 
+        - sudo timeKeeper_test2 
+        - sudo smsSender_test1
+        - sudo smsSender_test2
+        - sudo smsPlanner_test1
+        - sudo smsPlanner_test2
