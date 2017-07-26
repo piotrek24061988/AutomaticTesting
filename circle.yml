@@ -30,6 +30,7 @@ compile:
         
 test:
     override:
+        - export LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH}
         - sudo timeKeeper_test1 
         - sudo timeKeeper_test2 
         - sudo smsSender_test1
