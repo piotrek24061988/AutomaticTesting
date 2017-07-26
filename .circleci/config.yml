@@ -1,11 +1,8 @@
- version: 2
- jobs:
-   dependencies:
-     pre:
-       - sudo apt-get update
-       - sudo apt-get cmake
-   machine:
-   build:
-     steps:
-       - checkout
-       - run: echo "hello world"
+dependencies:
+    pre:
+        # Install a few packages which will be needed for building the cross compiler.
+        - sudo apt-get update
+        - sudo apt-get install cmake
+compile:
+    override:
+        - cmake .
