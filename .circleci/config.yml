@@ -2,7 +2,7 @@
  jobs:
    machine:
      pre:
-     - apt-get install cmake
+       - apt-get install cmake
    build:
      steps:
        - checkout
