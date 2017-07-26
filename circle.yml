@@ -5,6 +5,7 @@ dependencies:
         - cmake ./cmake-3.9.0-rc5/
         - sudo make      
         - sudo make install
+        - rm -r CMakeCache.txt CMakeFiles
 compile:
     override:
         - cmake ./module1
