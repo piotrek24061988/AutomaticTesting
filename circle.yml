@@ -34,4 +34,4 @@ machine:
 
 test:
     override:
-        - ./out/usr/local/bin/timeKeeper_test1
+        - timeKeeper_test1
