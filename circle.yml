@@ -48,7 +48,7 @@ test:
         - smsSender_test1
         - smsPlanner_test1
         ###################################################################
-        # execute cppunit integration tests for for compiled project       #       
+        # execute cppunit integration tests for for compiled project      #       
         ###################################################################
         - timeKeeper_test2
         - smsSender_test2
