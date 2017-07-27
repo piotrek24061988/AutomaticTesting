@@ -33,7 +33,7 @@ dependencies:
 compile:
     override:
         ###################################################################
-        # build and install destination project                           #       
+        # build and install destination project and unit tests            #       
         ###################################################################
         - cmake ./module1
         - sudo make
@@ -41,6 +41,24 @@ compile:
 
 test:
     override:
+        ###################################################################
+        # execute google unit tests for for compiled project              #       
+        ###################################################################
+        - timeKeeper_test1
+        - smsSender_test1
+        - smsPlanner_test1
+        ###################################################################
+        # execute cppunit unit tests for for compiled project             #       
+        ###################################################################
+        - timeKeeper_test2
+        - smsSender_test2
+        - smsPlanner_test2
+        ###################################################################
+        # build and install destination project and integration tests     #       
+        ###################################################################
+        - cmake -DIntegrationTests=ON ./module1
+        - sudo make
+        - sudo make install
         ###################################################################
         # execute google integration tests for for compiled project       #       
         ###################################################################
@@ -50,6 +68,3 @@ test:
         ###################################################################
         # execute cppunit integration tests for for compiled project      #       
         ###################################################################
-        - timeKeeper_test2
-        - smsSender_test2
-        - smsPlanner_test2
