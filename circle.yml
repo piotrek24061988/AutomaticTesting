@@ -31,8 +31,8 @@ compile:
         - export LD_LIBRARY_PATH=${PWD}/out/usr/local/lib/
 
 test:
-    environment:
-        LD_LIBRARY_PATH: ${PWD}/out/usr/local/lib/
     override:
-        - echo ${LD_LIBRARY_PATH}
-        - ./out/usr/local/bin/timeKeeper_test1
+        - ctest:
+            pwd: {PWD}/out/usr/local/bin/timeKeeper_test1
+            environment:
+                LD_LIBRARY_PATH: ${PWD}/out/usr/local/lib/
