@@ -24,8 +24,6 @@ dependencies:
     post: 
         - rm -r ~/.gradle
 
-Caching in Paralle
-        
 compile:
     override:
         - cmake ./module1
