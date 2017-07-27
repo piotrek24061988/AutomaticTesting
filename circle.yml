@@ -25,14 +25,12 @@ dependencies:
 compile:
     override:
         - cmake ./module1
-        - mkdir out
         - sudo make
-        - sudo make install DESTDIR=${PWD}/out 
-        - export LD_LIBRARY_PATH=${PWD}/out/usr/local/lib/
+        - sudo make install
 
 machine:
   environment:
-    LD_LIBRARY_PATH: ${PWD}/out/usr/local/lib/
+    LD_LIBRARY_PATH: /usr/local/lib/
 
 test:
     override:
