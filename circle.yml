@@ -56,7 +56,8 @@ test:
         ###################################################################
         # build and install destination project and integration tests     #       
         ###################################################################
-        - cmake -DIntegrationTests=ON ./module1
+        - echo "add_definitions(-DIntegrationTests)" >> module1/CMakeLists.txt
+        - cmake ./module1
         - sudo make
         - sudo make install
         ###################################################################
@@ -68,3 +69,6 @@ test:
         ###################################################################
         # execute cppunit integration tests for for compiled project      #       
         ###################################################################
+        - timeKeeper_test2
+        - smsSender_test2
+        - smsPlanner_test2
