@@ -57,6 +57,7 @@ test:
         # build and install destination project and integration tests     #       
         ###################################################################
         - echo -e "add_definitions(-DIntegrationTests)\n$(cat module1/CMakeLists.txt)" > module1/CMakeLists.txt
+        - rm -rf CMakeFiles CMakeCache.txt
         - cmake ./module1
         - sudo make
         - sudo make install
