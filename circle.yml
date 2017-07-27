@@ -30,9 +30,10 @@ compile:
         - sudo make install DESTDIR=${PWD}/out 
         - export LD_LIBRARY_PATH=${PWD}/out/usr/local/lib/
 
+machine:
+  environment:
+    LD_LIBRARY_PATH: ${PWD}/out/usr/local/lib/
+
 test:
     override:
-        - ctest:
-            pwd: out/usr/local/bin/timeKeeper_test1
-            environment:
-                LD_LIBRARY_PATH: ${PWD}/out/usr/local/lib/
+        - ./out/usr/local/bin/timeKeeper_test1
