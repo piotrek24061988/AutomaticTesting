@@ -21,6 +21,10 @@ dependencies:
         - sudo apt-get install autoconf
         # installing autotools
         - sudo apt-get install autotools-dev
+    post: 
+        - rm -r ~/.gradle
+
+Caching in Paralle
         
 compile:
     override:
