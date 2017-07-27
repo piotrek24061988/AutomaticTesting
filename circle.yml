@@ -33,6 +33,6 @@ compile:
 test:
     override:
         - ctest:
-            pwd: {PWD}/out/usr/local/bin/timeKeeper_test1
+            pwd: out/usr/local/bin/timeKeeper_test1
             environment:
                 LD_LIBRARY_PATH: ${PWD}/out/usr/local/lib/
