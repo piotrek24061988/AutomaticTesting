@@ -29,3 +29,8 @@ compile:
         - sudo make
         - sudo make install DESTDIR=${PWD}/out 
         - export LD_LIBRARY_PATH=${PWD}/out/usr/local/lib/
+
+test:
+    override:
+        - echo ${LD_LIBRARY_PATH}
+        - ./out/usr/local/bin/timeKeeper_test1
