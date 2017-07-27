@@ -100,7 +100,7 @@ TEST_F(smsPlanner_test1, addDeliveryRetDiffId)
 #endif
 
 	int id = planner_mock->addDelivery(std::string("537240688"), std::string("Hello"), time(NULL) + 60);
-	EXPECT_NE(id, planner_mock->addDelivery(std::string("537240688"), std::string("Hello"), time(NULL) + 60));
+	EXPECT_NE(id, planner_mock->addDelivery(std::string("537240688"), std::string("Hello2"), time(NULL) + 60));
 }
 
 //Insert 2 smses to queue and remove them by cancel mechanism and check if it works. 
