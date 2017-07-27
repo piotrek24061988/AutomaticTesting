@@ -1,9 +1,17 @@
+machine:
+    environment:
+        ###################################################################
+        # use also dynamic library installed by the cmake project         #
+        ###################################################################
+        LD_LIBRARY_PATH: /usr/local/lib/
+
 checkout:
     post:
         ###################################################################
         # download submodules gtest/gmock and cppunit from original repos #
         ###################################################################
         - git submodule update --init --recursive
+
 dependencies:
     pre:
         ###################################################################
@@ -24,14 +32,24 @@ dependencies:
 
 compile:
     override:
+        ###################################################################
+        # build and install destination project                           #       
+        ###################################################################
         - cmake ./module1
         - sudo make
         - sudo make install
 
-machine:
-  environment:
-    LD_LIBRARY_PATH: /usr/local/lib/
-
 test:
     override:
+        ###################################################################
+        # execute google integration tests for for compiled project       #       
+        ###################################################################
         - timeKeeper_test1
+        - smsSender_test1
+        - smsPlanner_test1
+        ###################################################################
+        # execute cppunit integration tests for for compiled project       #       
+        ###################################################################
+        - timeKeeper_test2
+        - smsSender_test2
+        - smsPlanner_test2
