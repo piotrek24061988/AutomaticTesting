@@ -4,8 +4,8 @@ download steps:
 3) git submodule update --init --recursive
 
 configuration steps:
-1) to build integration tests, just build
-2) to build unit tests, disable AutomaticTesting/module1/CMakeLists.txt IntegrationTests flag and then build 
+1) to build unit tests, just build
+2) to build integration tests, enable AutomaticTesting/module1/CMakeLists.txt IntegrationTests flag and then build 
 
 build steps:
 1) mkdir out  - create cmake output directory
