@@ -26,7 +26,9 @@ compile:
     override:
         - cmake ./module1
         - mkdir out
+        # - sudo make
         - sudo make DESTDIR=${PWD}/out
+        # - sudo make install
         - sudo make install DESTDIR=${PWD}/out 
         - export LD_LIBRARY_PATH=${PWD}/out/usr/local/lib/
         - ./out/usr/local/bin/timeKeeper_test1
