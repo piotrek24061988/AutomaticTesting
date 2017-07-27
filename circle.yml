@@ -26,6 +26,6 @@ compile:
     override:
         - cmake ./module1
         - mkdir out
-        - sudo make DESTDIR=${PWD}/out
+        - sudo make
         - sudo make install DESTDIR=${PWD}/out 
         - export LD_LIBRARY_PATH=${PWD}/out/usr/local/lib/
