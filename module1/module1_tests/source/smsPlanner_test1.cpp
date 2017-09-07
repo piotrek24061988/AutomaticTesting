@@ -155,6 +155,27 @@ TEST_F(smsPlanner_test1, sendAllSuccess)
 	EXPECT_TRUE(planner_mock->sendAll());
 }
 
+//Verify that sending smses from queue mechanism is working.
+TEST_F(smsPlanner_test1, sendAllFail)
+{
+#ifdef IntegrationTests
+	EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(2);
+#else
+	EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(2).WillRepeatedly(Return(true));
+#endif
+
+	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 1"), time(NULL) + 60);
+	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 2"), time(NULL) + 60);
+
+#ifdef IntegrationTests
+	EXPECT_CALL(*sender_mock, send(_, _)).Times(2);
+#else
+        EXPECT_CALL(*sender_mock, send(_, _)).Times(2).WillOnce(Return(true)).WillOnce(Return(false));
+#endif
+
+	EXPECT_FALSE(planner_mock->sendAll());
+}
+
 //Verify that it is not possible to send the same sms two times.
 TEST_F(smsPlanner_test1, notSendTwoTimes)
 {
