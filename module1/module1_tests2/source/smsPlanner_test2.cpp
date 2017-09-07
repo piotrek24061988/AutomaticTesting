@@ -27,7 +27,9 @@ public:
 	void cancelDeliveries();
 	void nonValidTimeFalse();
 	void sendAllSuccess();
-	void sendAllFail();
+#ifndef IntegrationTests
+	void sendAllFail(); //Only unit test.
+#endif
 	void notSendTwoTimes();
 	void notSendCanceled();
 	void notCancelAfterSend();
@@ -39,7 +41,9 @@ public:
 	CPPUNIT_TEST(cancelDeliveries);
 	CPPUNIT_TEST(nonValidTimeFalse);
 	CPPUNIT_TEST(sendAllSuccess);
-        CPPUNIT_TEST(sendAllFail);
+#ifndef IntegrationTests
+        CPPUNIT_TEST(sendAllFail); //Only unit test.
+#endif
 	CPPUNIT_TEST(notSendTwoTimes);
 	CPPUNIT_TEST(notSendCanceled);
 	CPPUNIT_TEST(notCancelAfterSend);
@@ -186,25 +190,21 @@ void smsPlanner_test2::sendAllSuccess()
 }
 
 //Verify that sending smses from queue mechanism is working.
+//Function send from sender_mock forced to return false to check planner
+//sendAll function error case behaviour. Only unit test.
+#ifndef IntegrationTests
 void smsPlanner_test2::sendAllFail()
 {
-#ifdef IntegrationTests
-	EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(2);
-#else
 	EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(2).WillRepeatedly(Return(true));
-#endif
 
 	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 1"), time(NULL) + 60);
 	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 2"), time(NULL) + 60);
 
-#ifdef IntegrationTests
-	EXPECT_CALL(*sender_mock, send(_, _)).Times(2);
-#else
         EXPECT_CALL(*sender_mock, send(_, _)).Times(2).WillOnce(Return(true)).WillOnce(Return(false));
-#endif
 
 	CPPUNIT_ASSERT(!planner_mock->sendAll());
 }
+#endif
 
 //Verify that it is not possible to send the same sms two times.
 void smsPlanner_test2::notSendTwoTimes()
