@@ -46,7 +46,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFdPEiQth+fw4M="
 							},
-							"name": "smsSender  sendValidatedSms",
+							"name": "smsSender  sendValidatedSmsDeinitError",
 							"visible": true,
 							"defaultDiagram": false,
 							"ownedViews": [
@@ -77,11 +77,11 @@
 											"containerExtending": false,
 											"left": 79,
 											"top": 5,
-											"width": 184,
+											"width": 245,
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "smsSender  sendValidatedSms",
+											"text": "smsSender  sendValidatedSmsDeinitError",
 											"horizontalAlignment": 2,
 											"verticalAlignment": 5,
 											"wordWrap": false
@@ -1078,19 +1078,19 @@
 											"showShadow": true,
 											"containerChangeable": false,
 											"containerExtending": false,
-											"left": 118,
+											"left": 128,
 											"top": 208,
-											"width": 128,
+											"width": 189,
 											"height": 13,
 											"autoResize": false,
-											"alpha": 1.6313273374278743,
-											"distance": 66.12110101926616,
+											"alpha": 1.6085132757068377,
+											"distance": 106.07544484940895,
 											"hostEdge": {
 												"$ref": "AAAAAAFdPFm0RSEGPGQ="
 											},
 											"edgePosition": 1,
 											"underline": false,
-											"text": "4 : sendValidatedSms",
+											"text": "4 : sendValidatedSmsDeinitError",
 											"horizontalAlignment": 2,
 											"verticalAlignment": 5,
 											"wordWrap": false
@@ -2470,9 +2470,9 @@
 											"showShadow": true,
 											"containerChangeable": false,
 											"containerExtending": false,
-											"left": 409,
+											"left": 406,
 											"top": 405,
-											"width": 85,
+											"width": 90,
 											"height": 13,
 											"autoResize": false,
 											"alpha": 1.5707963267948966,
@@ -2482,7 +2482,7 @@
 											},
 											"edgePosition": 1,
 											"underline": false,
-											"text": "11 : return true",
+											"text": "11 : return false",
 											"horizontalAlignment": 2,
 											"verticalAlignment": 5,
 											"wordWrap": false
@@ -2640,9 +2640,9 @@
 											"showShadow": true,
 											"containerChangeable": false,
 											"containerExtending": false,
-											"left": 186,
+											"left": 183,
 											"top": 412,
-											"width": 85,
+											"width": 90,
 											"height": 13,
 											"autoResize": false,
 											"alpha": 1.5707963267948966,
@@ -2652,7 +2652,7 @@
 											},
 											"edgePosition": 1,
 											"underline": false,
-											"text": "12 : return true",
+											"text": "12 : return false",
 											"horizontalAlignment": 2,
 											"verticalAlignment": 5,
 											"wordWrap": false
@@ -3360,7 +3360,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFdPEiQth+fw4M="
 							},
-							"name": "sendValidatedSms",
+							"name": "sendValidatedSmsDeinitError",
 							"source": {
 								"$ref": "AAAAAAFdPEkqfB+vAaQ="
 							},
@@ -3479,7 +3479,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFdPEiQth+fw4M="
 							},
-							"name": "return true",
+							"name": "return false",
 							"source": {
 								"$ref": "AAAAAAFe9rjN2nFpFwM="
 							},
@@ -3496,7 +3496,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFdPEiQth+fw4M="
 							},
-							"name": "return true",
+							"name": "return false",
 							"source": {
 								"$ref": "AAAAAAFdPEpZ7x/URjM="
 							},
