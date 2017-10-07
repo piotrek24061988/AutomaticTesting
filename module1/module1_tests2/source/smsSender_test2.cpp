@@ -2,10 +2,17 @@
 #include "cppunit/extensions/TestFactoryRegistry.h"
 #include "cppunit/ui/text/TestRunner.h"
 
+#include "gmock/gmock.h"
+
 #include "smsSender.hpp"
 #include "smsDevice.hpp"
 
 #include "smsDevice_mock.hpp"
+
+using ::testing::Ge;
+using ::testing::NotNull;
+using ::testing::Return;
+using ::testing::_;
 
 class smsSender_test2 : public CppUnit::TestFixture
 {
