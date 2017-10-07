@@ -1,3 +1,10 @@
+preconditions:
+1) Linux OS
+2) C++ compiler installed with C++11 support
+3) Cmake 3.x or higher installed
+4) Autotools installed
+5) Git installed
+
 download steps:
 1) git clone https://github.com/piotrek24061988/AutomaticTesting.git
 2) cd AutomaticTesting
