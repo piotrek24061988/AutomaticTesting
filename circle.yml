@@ -45,12 +45,14 @@ test:
         # execute google unit tests for for compiled project              #       
         ###################################################################
         - timeKeeper_test1
+        - smsDevice_test1
         - smsSender_test1
         - smsPlanner_test1
         ###################################################################
         # execute cppunit unit tests for for compiled project             #       
         ###################################################################
         - timeKeeper_test2
+        - smsDevice_test2
         - smsSender_test2
         - smsPlanner_test2
         ###################################################################
@@ -65,11 +67,13 @@ test:
         # execute google integration tests for for compiled project       #       
         ###################################################################
         - timeKeeper_test1
+        - smsDevice_test1
         - smsSender_test1
         - smsPlanner_test1
         ###################################################################
         # execute cppunit integration tests for for compiled project      #       
         ###################################################################
         - timeKeeper_test2
+        - smsDevice_test2
         - smsSender_test2
         - smsPlanner_test2

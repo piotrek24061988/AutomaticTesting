@@ -18,10 +18,12 @@ post build steps
 1) export LD_LIBRARY_PATH=out/usr/local/lib/  - export dynamic libraries from project build output
 2) ./out/usr/local/bin/timeKeeper_test1  - execute tests for timeKeeper with googletest or
    ./out/usr/local/bin/timeKeeper_test2  - execute tests for timeKeeper with cppunit
-3) ./out/usr/local/bin/smsSender_test1  - execute tests for smsSender with googletest or
+3) ./out/usr/local/bin/smsDevice_test1  - execute tests for smsDevice with googletest or
+   ./out/usr/local/bin/smsDevice_test2  - execute tests for smsDevice with cppunit
+4) ./out/usr/local/bin/smsSender_test1  - execute tests for smsSender with googletest or
    ./out/usr/local/bin/smsSender_test2  - execute tests for smsSender with cppunit
-4) ./out/usr/local/bin/smsPlanner_test1  - exeute tests for smsPlanner with googletest or
+5) ./out/usr/local/bin/smsPlanner_test1  - exeute tests for smsPlanner with googletest or
    ./out/usr/local/bin/smsPlanner_test2  - exeute tests for smsPlanner with cppunit
-5) lcov --rc lcov_branch_coverage=1 --capture --directory $PWD --output-file coverage.info  - generate code coverage output file
-6) genhtml --rc lcov_branch_coverage=1 coverage.info --output-directory outhtml  - convert code coverage output file to html file
-7) firefox outhtml/index.html  - open html code coverage output file in web browser
+6) lcov --rc lcov_branch_coverage=1 --capture --directory $PWD --output-file coverage.info  - generate code coverage output file
+7) genhtml --rc lcov_branch_coverage=1 coverage.info --output-directory outhtml  - convert code coverage output file to html file
+8) firefox outhtml/index.html  - open html code coverage output file in web browser

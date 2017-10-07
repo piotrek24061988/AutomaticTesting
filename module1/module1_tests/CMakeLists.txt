@@ -14,7 +14,7 @@ include_directories(${GOOGLE_MOCK_RELATIVE}/googlemock/include
 set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/source)
 set(PRIVATE_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-set(TESTNAMES smsPlanner_test1 timeKeeper_test1 smsSender_test1)
+set(TESTNAMES smsPlanner_test1 timeKeeper_test1 smsSender_test1 smsDevice_test1)
 
 foreach(testname ${TESTNAMES})
 

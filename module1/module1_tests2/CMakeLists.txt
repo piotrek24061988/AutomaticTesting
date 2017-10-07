@@ -32,7 +32,7 @@ include_directories(${CPP_UNIT_RELATIVE}/include)
 set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/source)
 set(PRIVATE_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-set(TESTNAMES smsPlanner_test2 timeKeeper_test2 smsSender_test2)
+set(TESTNAMES smsPlanner_test2 timeKeeper_test2 smsSender_test2 smsDevice_test2)
 
 foreach(testname ${TESTNAMES})
 

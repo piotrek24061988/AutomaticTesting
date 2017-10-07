@@ -7,9 +7,11 @@
 #include "smsPlanner.hpp"
 #include "timeKeeper.hpp"
 #include "smsSender.hpp"
+#include "smsDevice.hpp"
 
 #include "timeKeeper_mock.hpp"
 #include "smsSender_mock.hpp"
+#include "smsDevice_mock.hpp"
 
 using ::testing::Ge;
 using ::testing::NotNull;
@@ -57,6 +59,9 @@ public:
 
 	smsSender * sender;
 	smsSender_mock * sender_mock;
+
+	smsDevice * device;
+	smsDevice_mock * device_mock;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(smsPlanner_test2);
@@ -65,15 +70,19 @@ void smsPlanner_test2::setUp()
 {
 	keeper = NULL;
 	keeper = new timeKeeper();
+	device = NULL;
+	device = new smsDevice();
 	sender = NULL;
-	sender = new smsSender();
+	sender = new smsSender(device);
 	planner = NULL;
 	planner = new smsPlanner(keeper, sender);
 
 	keeper_mock = NULL;
 	keeper_mock = new timeKeeper_mock();
+	device_mock = NULL;
+	device_mock = new smsDevice_mock();
 	sender_mock = NULL;
-	sender_mock = new smsSender_mock();
+	sender_mock = new smsSender_mock(device_mock);
 	planner_mock = NULL;
 	planner_mock = new smsPlanner(keeper_mock, sender_mock);
 } 
@@ -95,6 +104,12 @@ void smsPlanner_test2::tearDown()
 		delete sender;
 		sender = NULL;
 	}
+	if(device)
+	{
+		delete device;
+		device = NULL;
+	}
+
 	if(planner_mock)
 	{
 		delete planner_mock;
@@ -109,6 +124,11 @@ void smsPlanner_test2::tearDown()
 	{
 		delete sender_mock;
 		sender_mock = NULL;
+	}
+	if(device_mock)
+	{
+		delete device_mock;
+		device_mock = NULL;
 	}
 }
 
@@ -182,6 +202,9 @@ void smsPlanner_test2::sendAllSuccess()
 
 #ifdef IntegrationTests
 	EXPECT_CALL(*sender_mock, send(_, _)).Times(3);
+	EXPECT_CALL(*device_mock, init()).Times(3);
+	EXPECT_CALL(*device_mock, send(_, _)).Times(3);
+	EXPECT_CALL(*device_mock, deInit()).Times(3);
 #else
         EXPECT_CALL(*sender_mock, send(_, _)).Times(3).WillRepeatedly(Return(true));
 #endif
@@ -221,6 +244,9 @@ void smsPlanner_test2::notSendTwoTimes()
 
 #ifdef IntegrationTests
 	EXPECT_CALL(*sender_mock, send(_, _)).Times(3);
+	EXPECT_CALL(*device_mock, init()).Times(3);
+	EXPECT_CALL(*device_mock, send(_, _)).Times(3);
+	EXPECT_CALL(*device_mock, deInit()).Times(3);
 #else
 	EXPECT_CALL(*sender_mock, send(_, _)).Times(3).WillRepeatedly(Return(true));
 #endif
@@ -228,6 +254,9 @@ void smsPlanner_test2::notSendTwoTimes()
 	planner_mock->sendAll();
 
 	EXPECT_CALL(*sender_mock, send(_, _)).Times(0);
+	EXPECT_CALL(*device_mock, init()).Times(0);
+	EXPECT_CALL(*device_mock, send(_, _)).Times(0);
+	EXPECT_CALL(*device_mock, deInit()).Times(0);
 
 	CPPUNIT_ASSERT(planner_mock->sendAll());
 }
@@ -245,6 +274,9 @@ void smsPlanner_test2::notSendCanceled()
 	planner_mock->cancelDelivery(id);
 	
 	EXPECT_CALL(*sender_mock, send(_, _)).Times(0);
+	EXPECT_CALL(*device_mock, init()).Times(0);
+	EXPECT_CALL(*device_mock, send(_, _)).Times(0);
+	EXPECT_CALL(*device_mock, deInit()).Times(0);
 
 	CPPUNIT_ASSERT(planner_mock->sendAll());
 }
@@ -262,6 +294,9 @@ void smsPlanner_test2::notCancelAfterSend()
 	
 #ifdef IntegrationTests
 	EXPECT_CALL(*sender_mock, send(_, _)).Times(1);
+	EXPECT_CALL(*device_mock, init()).Times(1);
+	EXPECT_CALL(*device_mock, send(_, _)).Times(1);
+	EXPECT_CALL(*device_mock, deInit()).Times(1);
 #else
 	EXPECT_CALL(*sender_mock, send(_, _)).Times(1).WillOnce(Return(true));
 #endif
