@@ -10,6 +10,8 @@
 #include "smsSender_mock.hpp"
 #include "smsDevice_mock.hpp"
 
+#include "coutRedirect.hpp"
+
 using ::testing::Ge;
 using ::testing::NotNull;
 using ::testing::Return;
@@ -269,4 +271,32 @@ TEST_F(smsPlanner_test1, notCancelAfterSend)
 	planner_mock->sendAll();
 
 	EXPECT_FALSE(planner_mock->cancelDelivery(id));
+}
+
+TEST_F(smsPlanner_test1, sendAllSuccess2BlackBox)
+{
+	planner->addDelivery(std::string("537240688"), std::string("Hello 1"), time(NULL) + 60);
+	planner->addDelivery(std::string("537240688"), std::string("Hello 2"), time(NULL) + 60);
+	planner->addDelivery(std::string("537240688"), std::string("Hello 3"), time(NULL) + 60);
+
+	EXPECT_TRUE(planner->sendAll());
+}
+
+TEST_F(smsPlanner_test1, sendAllSuccess2WhiteBox)
+{
+	coutRedirect cR;
+
+	planner->addDelivery(std::string("537240688"), std::string("Hello 1"), time(NULL) + 60);
+	planner->addDelivery(std::string("537240688"), std::string("Hello 2"), time(NULL) + 60);
+	planner->addDelivery(std::string("537240688"), std::string("Hello 3"), time(NULL) + 60);
+
+	EXPECT_TRUE(planner->sendAll());
+
+	std::string str = cR.getString();
+
+        EXPECT_TRUE( str.find("bool timeKeeper::getTimeValid(std::time_t curTime)") != std::string::npos);
+        EXPECT_TRUE( str.find("bool smsSender::send(std::string number, std::string message)") != std::string::npos);
+        EXPECT_TRUE( str.find("bool smsDevice::init()") != std::string::npos);
+        EXPECT_TRUE( str.find("bool smsSender::send(std::string number, std::string message)") != std::string::npos);
+        EXPECT_TRUE( str.find("bool smsDevice::deInit()") != std::string::npos);
 }
