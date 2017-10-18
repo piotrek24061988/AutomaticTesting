@@ -20,6 +20,10 @@ set(GOOGLE_MOCK_RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/../googletest)
 include_directories(${GOOGLE_MOCK_RELATIVE}/googlemock/include
 		    ${GOOGLE_MOCK_RELATIVE}/googletest/include)
 
+#Add tests helper
+set(TESTS_HELPER ${CMAKE_CURRENT_SOURCE_DIR}/../tests_helper)
+include_directories(${TESTS_HELPER}/public)
+
 add_library(cppunit_shared SHARED IMPORTED GLOBAL)
 set_property(TARGET cppunit_shared PROPERTY IMPORTED_LOCATION ${CMAKE_INSTALL_PREFIX}/lib/libcppunit.so)
 add_dependencies(cppunit_shared cppunit)
@@ -37,7 +41,7 @@ set(TESTNAMES smsPlanner_test2 timeKeeper_test2 smsSender_test2 smsDevice_test2)
 foreach(testname ${TESTNAMES})
 
 	add_executable(${testname} ${SRC_DIR}/${testname}.cpp)
-	target_link_libraries(${testname} cppunit_shared gmock_main module1)
+	target_link_libraries(${testname} cppunit_shared gmock_main tests_helper module1)
 	target_include_directories(${testname} PRIVATE ${PRIVATE_INCLUDE_DIR})
 	add_dependencies(${testname} cppunit_shared module1)
 

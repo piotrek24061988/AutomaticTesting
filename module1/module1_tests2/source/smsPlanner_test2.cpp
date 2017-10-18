@@ -13,6 +13,8 @@
 #include "smsSender_mock.hpp"
 #include "smsDevice_mock.hpp"
 
+#include "coutRedirect.hpp"
+
 using ::testing::Ge;
 using ::testing::NotNull;
 using ::testing::Return;
@@ -35,6 +37,10 @@ public:
 	void notSendTwoTimes();
 	void notSendCanceled();
 	void notCancelAfterSend();
+#ifdef IntegrationTests 
+	void sendAllSuccess2BlackBox(); //Only integration test.
+	void sendAllSuccess2WhiteBox(); //Only integration test.
+#endif
 
 public:
 	CPPUNIT_TEST_SUITE(smsPlanner_test2);
@@ -49,6 +55,10 @@ public:
 	CPPUNIT_TEST(notSendTwoTimes);
 	CPPUNIT_TEST(notSendCanceled);
 	CPPUNIT_TEST(notCancelAfterSend);
+#ifdef IntegrationTests
+	CPPUNIT_TEST(sendAllSuccess2BlackBox); //Only integration test.
+	CPPUNIT_TEST(sendAllSuccess2WhiteBox); //Only integration test.
+#endif
 	CPPUNIT_TEST_SUITE_END();
 
 	smsPlanner * planner;
@@ -305,6 +315,40 @@ void smsPlanner_test2::notCancelAfterSend()
 
 	CPPUNIT_ASSERT(false == planner_mock->cancelDelivery(id));
 }
+
+//Verify that sending smses from queue mechanism is working.
+#ifdef IntegrationTests
+void smsPlanner_test2::sendAllSuccess2BlackBox()
+{
+	planner->addDelivery(std::string("537240688"), std::string("Hello 1"), time(NULL) + 60);
+	planner->addDelivery(std::string("537240688"), std::string("Hello 2"), time(NULL) + 60);
+	planner->addDelivery(std::string("537240688"), std::string("Hello 3"), time(NULL) + 60);
+
+	CPPUNIT_ASSERT(planner->sendAll());
+}
+#endif
+
+//Verify that sending smses from queue mechanism is working.
+#ifdef IntegrationTests
+void smsPlanner_test2::sendAllSuccess2WhiteBox()
+{
+	coutRedirect cR;
+
+	planner->addDelivery(std::string("537240688"), std::string("Hello 1"), time(NULL) + 60);
+	planner->addDelivery(std::string("537240688"), std::string("Hello 2"), time(NULL) + 60);
+	planner->addDelivery(std::string("537240688"), std::string("Hello 3"), time(NULL) + 60);
+
+	CPPUNIT_ASSERT(planner->sendAll());
+
+	std::string str = cR.getString();
+
+        EXPECT_TRUE( str.find("bool timeKeeper::getTimeValid(std::time_t curTime)") != std::string::npos);
+        EXPECT_TRUE( str.find("bool smsSender::send(std::string number, std::string message)") != std::string::npos);
+        EXPECT_TRUE( str.find("bool smsDevice::init()") != std::string::npos);
+        EXPECT_TRUE( str.find("bool smsSender::send(std::string number, std::string message)") != std::string::npos);
+        EXPECT_TRUE( str.find("bool smsDevice::deInit()") != std::string::npos);
+}
+#endif
 
 int main(int argc, char * argv[])
 {

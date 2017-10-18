@@ -273,6 +273,7 @@ TEST_F(smsPlanner_test1, notCancelAfterSend)
 	EXPECT_FALSE(planner_mock->cancelDelivery(id));
 }
 
+#ifdef IntegrationTests
 TEST_F(smsPlanner_test1, sendAllSuccess2BlackBox)
 {
 	planner->addDelivery(std::string("537240688"), std::string("Hello 1"), time(NULL) + 60);
@@ -281,7 +282,9 @@ TEST_F(smsPlanner_test1, sendAllSuccess2BlackBox)
 
 	EXPECT_TRUE(planner->sendAll());
 }
+#endif
 
+#ifdef IntegrationTests
 TEST_F(smsPlanner_test1, sendAllSuccess2WhiteBox)
 {
 	coutRedirect cR;
@@ -300,3 +303,4 @@ TEST_F(smsPlanner_test1, sendAllSuccess2WhiteBox)
         EXPECT_TRUE( str.find("bool smsSender::send(std::string number, std::string message)") != std::string::npos);
         EXPECT_TRUE( str.find("bool smsDevice::deInit()") != std::string::npos);
 }
+#endif
