@@ -181,7 +181,7 @@ TEST_F(smsPlanner_test1, sendAllSuccess)
 
 //Verify that sending smses from queue mechanism is working.
 //Function send from sender_mock forced to return false to check planner
-//sendAll function error case behaviour. Only unit test.
+//sendAll function error case behaviour.
 #ifndef IntegrationTests
 TEST_F(smsPlanner_test1, sendAllFail)
 {
@@ -273,6 +273,7 @@ TEST_F(smsPlanner_test1, notCancelAfterSend)
 	EXPECT_FALSE(planner_mock->cancelDelivery(id));
 }
 
+//Verify that sending smses from queue mechanism is working.
 #ifdef IntegrationTests
 TEST_F(smsPlanner_test1, sendAllSuccess2BlackBox)
 {
@@ -284,6 +285,7 @@ TEST_F(smsPlanner_test1, sendAllSuccess2BlackBox)
 }
 #endif
 
+//Verify that sending smses from queue mechanism is working.
 #ifdef IntegrationTests
 TEST_F(smsPlanner_test1, sendAllSuccess2WhiteBox)
 {

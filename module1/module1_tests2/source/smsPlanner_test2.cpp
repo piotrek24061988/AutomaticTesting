@@ -32,14 +32,16 @@ public:
 	void nonValidTimeFalse();
 	void sendAllSuccess();
 #ifndef IntegrationTests
-	void sendAllFail(); //Only unit test.
+	void sendAllFail();
 #endif
 	void notSendTwoTimes();
 	void notSendCanceled();
 	void notCancelAfterSend();
 #ifdef IntegrationTests 
-	void sendAllSuccess2BlackBox(); //Only integration test.
-	void sendAllSuccess2WhiteBox(); //Only integration test.
+	void sendAllSuccess2BlackBox();
+#endif
+#ifdef IntegrationTests
+	void sendAllSuccess2WhiteBox();
 #endif
 
 public:
@@ -50,14 +52,16 @@ public:
 	CPPUNIT_TEST(nonValidTimeFalse);
 	CPPUNIT_TEST(sendAllSuccess);
 #ifndef IntegrationTests
-        CPPUNIT_TEST(sendAllFail); //Only unit test.
+        CPPUNIT_TEST(sendAllFail);
 #endif
 	CPPUNIT_TEST(notSendTwoTimes);
 	CPPUNIT_TEST(notSendCanceled);
 	CPPUNIT_TEST(notCancelAfterSend);
 #ifdef IntegrationTests
-	CPPUNIT_TEST(sendAllSuccess2BlackBox); //Only integration test.
-	CPPUNIT_TEST(sendAllSuccess2WhiteBox); //Only integration test.
+	CPPUNIT_TEST(sendAllSuccess2BlackBox);
+#endif
+#ifdef IntegrationTests
+	CPPUNIT_TEST(sendAllSuccess2WhiteBox);
 #endif
 	CPPUNIT_TEST_SUITE_END();
 
@@ -224,7 +228,7 @@ void smsPlanner_test2::sendAllSuccess()
 
 //Verify that sending smses from queue mechanism is working.
 //Function send from sender_mock forced to return false to check planner
-//sendAll function error case behaviour. Only unit test.
+//sendAll function error case behaviour.
 #ifndef IntegrationTests
 void smsPlanner_test2::sendAllFail()
 {

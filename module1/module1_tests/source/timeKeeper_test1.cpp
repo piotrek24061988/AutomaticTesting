@@ -25,12 +25,16 @@ protected:
 	timeKeeper * keeper;
 };
 
+#ifndef IntegrationTests
 TEST_F(timeKeeper_test1, timeInvalid)
 {
 	EXPECT_FALSE( keeper->getTimeValid(time(NULL) - 1));
 }
+#endif
 
+#ifndef IntegrationTests
 TEST_F(timeKeeper_test1, timeVvalidated)
 {
 	EXPECT_TRUE( keeper->getTimeValid(time(NULL) + 1));
 }
+#endif

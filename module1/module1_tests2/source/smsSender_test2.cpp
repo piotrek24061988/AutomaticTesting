@@ -23,7 +23,11 @@ public:
 	void sendValidatedSms();
 #ifndef IntegrationTests
 	void sendValidatedSmsInitError();
+#endif
+#ifndef IntegrationTests
 	void sendValidatedSmsSendError();
+#endif
+#ifndef IntegrationTests
 	void sendValidatedSmsDeinitError();
 #endif
 
@@ -32,7 +36,11 @@ public:
 	CPPUNIT_TEST(sendValidatedSms);
 #ifndef IntegrationTests
 	CPPUNIT_TEST(sendValidatedSmsInitError);
+#endif
+#ifndef IntegrationTests
 	CPPUNIT_TEST(sendValidatedSmsSendError);
+#endif
+#ifndef IntegrationTests
 	CPPUNIT_TEST(sendValidatedSmsDeinitError);
 #endif
 	CPPUNIT_TEST_SUITE_END();
