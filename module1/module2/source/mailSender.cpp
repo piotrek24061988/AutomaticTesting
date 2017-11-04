@@ -1,6 +1,8 @@
 #include "mailSender.hpp"
 #include <iostream>
 
+#include "connectionChecker.hpp"
+
 mailSender::mailSender(mailDevice * md): md(md)
 {
 }
@@ -14,6 +16,12 @@ mailSender::~mailSender()
 int mailSender::send(std::string from, std::string to, std::string topic, std::string content)
 {
 	std::cout << "int mailSender::send(std::string, std::string, std::string, std::string)" << std::endl;
+
+	connectionChecker cC;
+	if(!cC.isInternetAvailable())
+	{
+		return -1;
+	}
 
         FILE * id;
 	if((id = md->openDriver()) == NULL)
