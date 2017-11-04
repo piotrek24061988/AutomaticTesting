@@ -1,4 +1,5 @@
 #include "mailDevice.hpp"
+#include "mailSender.hpp"
 #include <iostream>
 
 int main(int argc, char** argv)
@@ -14,10 +15,20 @@ int main(int argc, char** argv)
 
     if(argc == expectedArgNr)
     {
+        std::cout << "send with method 1" << std::endl;
+   
         mailDevice device;
         FILE * id = device.openDriver();
         device.sendMail(id, std::string(argv[1]), std::string(argv[2]), std::string(argv[3]), std::string(argv[4]));
-        return device.closeDriver(id);
+        if(device.closeDriver(id) == -1)
+        {
+            return -1;
+        }
+
+        std::cout << "send with method 2" << std::endl;
+   
+        mailSender ms(&device);
+	return ms.send(std::string(argv[1]), std::string(argv[2]), std::string(argv[3]), std::string(argv[4]));
     }
     else
     {
