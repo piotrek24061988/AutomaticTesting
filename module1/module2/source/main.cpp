@@ -1,5 +1,6 @@
 #include "mailDevice.hpp"
 #include "mailSender.hpp"
+#include "mailPlanner.hpp"
 #include <iostream>
 
 int main(int argc, char** argv)
@@ -16,8 +17,14 @@ int main(int argc, char** argv)
     if(argc == expectedArgNr)
     {
 	mailDevice device;
-        mailSender ms(&device);
-	return ms.send(std::string(argv[1]), std::string(argv[2]), std::string(argv[3]), std::string(argv[4]));
+        mailSender sender(&device);
+	mailPlanner mp(&sender);
+	//return sender.send(std::string(argv[1]), std::string(argv[2]), std::string(argv[3]), std::string(argv[4]));
+        mp.addDelivery(std::string(argv[1]), std::string(argv[2]), std::string(argv[3]), std::string(argv[4]));
+        mp.addDelivery(std::string(argv[1]), std::string("piotrek24061988@gmail.com"), std::string(argv[3]), std::string(argv[4]));
+        int id = mp.addDelivery(std::string(argv[1]), std::string("piotr.gorecki@mobica.com"), std::string(argv[3]), std::string(argv[4]));
+	mp.cancelDelivery(id);
+	mp.sendAll();
     }
     else
     {

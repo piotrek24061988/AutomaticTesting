@@ -12,7 +12,7 @@ public:
 	~mailSender();
 
 	//Send message to email address from email account with following subject.
-        //Return -1 if fail.
+        //Return -1 if failed.
 	virtual int send(std::string from, std::string to, std::string topic, std::string content);
 
 private:

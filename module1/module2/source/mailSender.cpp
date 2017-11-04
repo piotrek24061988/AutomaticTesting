@@ -12,13 +12,13 @@ mailSender::~mailSender()
 }
 
 //Send message to email address from email account with following subject.
-//Return -1 if fail.
+//Return -1 if failed.
 int mailSender::send(std::string from, std::string to, std::string topic, std::string content)
 {
 	std::cout << "int mailSender::send(std::string, std::string, std::string, std::string)" << std::endl;
 
-	connectionChecker cC;
-	if(!cC.isInternetAvailable())
+	connectionChecker cc;
+	if(!cc.isInternetAvailable())
 	{
 		return -1;
 	}
