@@ -1,6 +1,6 @@
 #include "connectionChecker.hpp"
 
-#include <stdio.h>
+#include <cstdio>
 #include <iostream>
 
 connectionChecker::connectionChecker()

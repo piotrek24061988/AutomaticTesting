@@ -9,7 +9,7 @@ public:
 
 	//Return true if there is internet connection available.
 	//Otherwise return false.
-	bool isInternetAvailable();
+	virtual bool isInternetAvailable();
 };
 
 #endif //_connectionChecker_hpp

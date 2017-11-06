@@ -20,7 +20,7 @@ set(MODULE2 module2)
 add_subdirectory(${MODULE2} ${CMAKE_BINARY_DIR}/cmake/${MODULE2})
 
 #tests written based on googletest and googlemock
-#set(MODULE2_TESTS module2_tests)
-#add_subdirectory(${MODULE2_TESTS} ${CMAKE_BINARY_DIR}/cmake/${MODULE2_TESTS})
+set(MODULE2_TESTS module2_tests)
+add_subdirectory(${MODULE2_TESTS} ${CMAKE_BINARY_DIR}/cmake/${MODULE2_TESTS})
 
 

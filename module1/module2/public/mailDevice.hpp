@@ -2,7 +2,7 @@
 #define _mailDevice_hpp
 
 #include <string>
-#include <stdio.h>
+#include <cstdio>
 
 class mailDevice
 {

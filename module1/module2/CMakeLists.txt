@@ -18,7 +18,8 @@ add_library(${PROJECT_NAME} SHARED ${allCodeFiles})
 
 target_include_directories(${PROJECT_NAME}
     PUBLIC $<BUILD_INTERFACE:${INCLUDE_DIR}>
-    PRIVATE ${PRIVATE_INCLUDE_DIR}
+    #PRIVATE ${PRIVATE_INCLUDE_DIR}
+    PUBLIC $<BUILD_INTERFACE:${PRIVATE_INCLUDE_DIR}>
 )
 
 #----------- Executable -------------------------
@@ -31,6 +32,7 @@ target_link_libraries(${PROJECT_NAME}_client module2)
 target_include_directories(${PROJECT_NAME}
     PUBLIC $<BUILD_INTERFACE:${INCLUDE_DIR}>
     PRIVATE ${PRIVATE_INCLUDE_DIR}
+    #PUBLIC $<BUILD_INTERFACE:${PRIVATE_INCLUDE_DIR}>
 )
 
 install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_client
@@ -41,3 +43,4 @@ install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_client
     INCLUDES DESTINATION include/${PROJECT_NAME})
 
 install(DIRECTORY ${INCLUDE_DIR}/ DESTINATION include/${PROJECT_NAME} COMPONENT dev)
+install(DIRECTORY ${PRIVATE_INCLUDE_DIR}/ DESTINATION include/${PROJECT_NAME} COMPONENT dev)
