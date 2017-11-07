@@ -30,16 +30,3 @@ TEST_F(connectionChecker_test1, internetAccessible)
 	EXPECT_TRUE(checker->isInternetAvailable());
 }
 #endif
-
-#ifndef IntegrationTests
-TEST_F(connectionChecker_test1, interneInaccessible)
-{
-	system("sudo ifconfig eth0 down");
-	system("sudo ifconfig wlan0 down");
-
-	EXPECT_FALSE(checker->isInternetAvailable());
-
-	system("sudo ifconfig eth0 up");
-	system("sudo ifconfig wlan0 up");
-}
-#endif
