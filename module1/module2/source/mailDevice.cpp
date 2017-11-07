@@ -43,5 +43,12 @@ int mailDevice::closeDriver(FILE * id)
 {
 	std::cout << "int mailDevice::closeDriver(FILE *)" << std::endl;
 
-	return pclose(id);
+	if(id != NULL)
+	{
+		return pclose(id);
+	}
+	else
+	{
+		return -1;
+	}
 }
