@@ -17,7 +17,7 @@ include_directories(${TESTS_HELPER}/public)
 set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/source)
 set(PRIVATE_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-set(TESTNAMES connectionChecker_test1 mailDevice_test1 mailSender_test1)
+set(TESTNAMES connectionChecker_test1 mailDevice_test1 mailSender_test1 mailPlanner_test1)
 
 foreach(testname ${TESTNAMES})
 

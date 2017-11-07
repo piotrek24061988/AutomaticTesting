@@ -93,18 +93,18 @@ TEST_F(mailSender_test1, sendValidatedMail_UT)
 #endif
 
 #ifdef IntegrationTests
-TEST_F(mailSender_test1, sendValidatedMai_ITBB)
+TEST_F(mailSender_test1, sendValidatedMail_ITBB)
 {
-	EXPECT_NE(-1, sender->send("piotrek24061988@gmail.com", "piotrek24061988@gmail.com", "sendValidatedMai_ITBB", "sendValidatedMai_ITBB"));
+	EXPECT_NE(-1, sender->send("piotrek24061988@gmail.com", "piotrek24061988@gmail.com", "sendValidatedMail_ITBB", "sendValidatedMail_ITBB"));
 }
 #endif
 
 #ifdef IntegrationTests
-TEST_F(mailSender_test1, sendValidatedMai_ITWBLogs)
+TEST_F(mailSender_test1, sendValidatedMail_ITWBLogs)
 {
 	coutRedirect cR;
 
-	EXPECT_NE(-1, sender->send("piotrek24061988@gmail.com", "piotrek24061988@gmail.com", "sendValidatedMai_ITBB", "sendValidatedMai_ITBBLogs"));
+	EXPECT_NE(-1, sender->send("piotrek24061988@gmail.com", "piotrek24061988@gmail.com", "sendValidatedMail_ITBBLogs", "sendValidatedMail_ITBBLogs"));
 
 	std::string str = cR.getString();
 
@@ -116,18 +116,18 @@ TEST_F(mailSender_test1, sendValidatedMai_ITWBLogs)
 #endif
 
 #ifdef IntegrationTests
-TEST_F(mailSender_test1, sendValidatedMai_ITWBMock)
+TEST_F(mailSender_test1, sendValidatedMail_ITWBMocks)
 {
 	EXPECT_CALL(*device_mock, openDriver()).Times(1);
 	EXPECT_CALL(*device_mock, sendMail(_, _, _, _, _)).Times(1);
 	EXPECT_CALL(*device_mock, closeDriver(_)).Times(1);
 
-	EXPECT_NE(-1, sender_mock->send("piotrek24061988@gmail.com", "piotrek24061988@gmail.com", "sendValidatedMai_ITWBMock", "sendValidatedMai_ITWBMock"));
+	EXPECT_NE(-1, sender_mock->send("piotrek24061988@gmail.com", "piotrek24061988@gmail.com", "sendValidatedMail_ITWBMocks", "sendValidatedMail_ITWBMocks"));
 }
 #endif
 
 #ifdef IntegrationTests
-TEST_F(mailSender_test1, sendValidatedMai_ITWBMockLogs)
+TEST_F(mailSender_test1, sendValidatedMail_ITWBMocksLogs)
 {
 	coutRedirect cR;
 
@@ -135,123 +135,10 @@ TEST_F(mailSender_test1, sendValidatedMai_ITWBMockLogs)
 	EXPECT_CALL(*device_mock, sendMail(_, _, _, _, _)).Times(1);
 	EXPECT_CALL(*device_mock, closeDriver(_)).Times(1);
 
-	EXPECT_NE(-1, sender_mock->send("piotrek24061988@gmail.com", "piotrek24061988@gmail.com", "sendValidatedMai_ITWBMockLogs", "sendValidatedMai_ITWBMockLogs"));
+	EXPECT_NE(-1, sender_mock->send("piotrek24061988@gmail.com", "piotrek24061988@gmail.com", "sendValidatedMail_ITWBMocksLogs", "sendValidatedMail_ITWBMocksLogs"));
 
 	std::string str = cR.getString();
 
 	EXPECT_TRUE( str.find("bool connectionChecker::isInternetAvailable()") != std::string::npos);
-}
-#endif
-
-#ifndef IntegrationTests
-TEST_F(mailSender_test1, sendMailOpenDriverError_UT)
-{
-	FILE * id = NULL;
-	EXPECT_CALL(*device_mock, openDriver()).Times(1).WillOnce(Return(id));
-	EXPECT_CALL(*device_mock, sendMail(_, _, _, _, _)).Times(0);
-	EXPECT_CALL(*device_mock, closeDriver(_)).Times(0);
-
-	EXPECT_EQ(-1, sender_mock->send("from", "to", "sendMailOpenDriverError_UT", "sendMailOpenDriverError_UT"));
-}
-#endif
-
-#ifndef IntegrationTests
-TEST_F(mailSender_test1, sendMailSendMailError_UT)
-{
-	FILE * id = new FILE();
-
-	EXPECT_CALL(*device_mock, openDriver()).Times(1).WillOnce(Return(id));
-	EXPECT_CALL(*device_mock, sendMail(id, _, _, _, _)).Times(1).WillOnce(Return(-1));
-	EXPECT_CALL(*device_mock, closeDriver(id)).Times(0);
-
-	EXPECT_EQ(-1, sender_mock->send("from", "to", "sendMailSendMailError_UT", "sendMailSendMailError_UT"));
-}
-#endif
-
-#ifndef IntegrationTests
-TEST_F(mailSender_test1, sendMailCloseDriverError_UT)
-{
-	FILE * id = new FILE();
-
-	EXPECT_CALL(*device_mock, openDriver()).Times(1).WillOnce(Return(id));
-	EXPECT_CALL(*device_mock, sendMail(id, _, _, _, _)).Times(1).WillOnce(Return(0));
-	EXPECT_CALL(*device_mock, closeDriver(id)).Times(1).WillOnce(Return(-1));
-
-	EXPECT_EQ(-1, sender_mock->send("from", "to", "sendMailCloseDriverError_UT", "sendMailCloseDriverError_UT"));
-}
-#endif
-
-#ifdef IntegrationTests
-TEST_F(mailSender_test1, sendMailError_ITBB)
-{
-	system("sudo ifconfig eth0 down");
-	system("sudo ifconfig wlan0 down");
-
-	EXPECT_EQ(-1, sender->send("piotrek24061988@gmail.com", "piotrek24061988@gmail.com", "sendValidatedMai_ITBB", "sendValidatedMai_ITBB"));
-
-	system("sudo ifconfig eth0 up");
-	system("sudo ifconfig wlan0 up");
-}
-#endif
-
-#ifdef IntegrationTests
-TEST_F(mailSender_test1, sendMailError_ITWBLogs)
-{
-	system("sudo ifconfig eth0 down");
-	system("sudo ifconfig wlan0 down");
-
-	coutRedirect cR;
-
-	EXPECT_EQ(-1, sender->send("piotrek24061988@gmail.com", "piotrek24061988@gmail.com", "sendValidatedMai_ITBB", "sendValidatedMai_ITBB"));
-
-	std::string str = cR.getString();
-
-	EXPECT_TRUE( str.find("bool connectionChecker::isInternetAvailable()") != std::string::npos);
-	EXPECT_FALSE( str.find("FILE * mailDevice::openDriver()") != std::string::npos);
-	EXPECT_FALSE( str.find("int mailDevice::sendMail(FILE *, std::string, std::string, std::string, std::string)") != std::string::npos);
-	EXPECT_FALSE( str.find("int mailDevice::closeDriver(FILE *)") != std::string::npos);
-
-	system("sudo ifconfig eth0 up");
-	system("sudo ifconfig wlan0 up");
-}
-#endif
-
-#ifdef IntegrationTests
-TEST_F(mailSender_test1, sendMailError_ITWBMock)
-{
-	system("sudo ifconfig eth0 down");
-	system("sudo ifconfig wlan0 down");
-
-	EXPECT_CALL(*device_mock, openDriver()).Times(0);
-	EXPECT_CALL(*device_mock, sendMail(_, _, _, _, _)).Times(0);
-	EXPECT_CALL(*device_mock, closeDriver(_)).Times(0);
-
-	EXPECT_EQ(-1, sender_mock->send("piotrek24061988@gmail.com", "piotrek24061988@gmail.com", "sendMailError_ITWBMock", "sendMailError_ITWBMock"));
-
-	system("sudo ifconfig eth0 up");
-	system("sudo ifconfig wlan0 up");
-}
-#endif
-
-#ifdef IntegrationTests
-TEST_F(mailSender_test1, sendMailError_ITWBMockLogs)
-{
-	system("sudo ifconfig eth0 down");
-	system("sudo ifconfig wlan0 down");
-
-	coutRedirect cR;
-
-	EXPECT_CALL(*device_mock, openDriver()).Times(0);
-	EXPECT_CALL(*device_mock, sendMail(_, _, _, _, _)).Times(0);
-	EXPECT_CALL(*device_mock, closeDriver(_)).Times(0);
-
-	EXPECT_EQ(-1, sender_mock->send("piotrek24061988@gmail.com", "piotrek24061988@gmail.com", "sendMailError_ITWBMockLogs", "sendMailError_ITWBMockLogs"));
-
-	std::string str = cR.getString();
-
-	EXPECT_TRUE( str.find("bool connectionChecker::isInternetAvailable()") != std::string::npos);
-
-	system("sudo ifconfig eth0 up");
-	system("sudo ifconfig wlan0 up");
 }
 #endif

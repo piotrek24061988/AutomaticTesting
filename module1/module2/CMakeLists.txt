@@ -23,9 +23,6 @@ target_include_directories(${PROJECT_NAME}
 )
 
 #----------- Executable -------------------------
-set(CMAKE_C_FLAGS "-pthread -lrt -g -O0")
-set(CMAKE_CXX_FLAGS "-pthread -lrt -std=c++11 -g -O0")
-
 add_executable(${PROJECT_NAME}_client ${SRC_DIR}/main.cpp)
 target_link_libraries(${PROJECT_NAME}_client module2)
 
