@@ -65,12 +65,5 @@ protected:
 #ifndef IntegrationTests
 TEST_F(mailSender_test1, sendValidatedMail_UT)
 {
-	FILE * id = new FILE();
-
-	EXPECT_CALL(*device_mock, openDriver()).Times(1).WillOnce(Return(id));
-	EXPECT_CALL(*device_mock, sendMail(id, _, _, _, _)).Times(1).WillOnce(Return(0));
-	EXPECT_CALL(*device_mock, closeDriver(id)).Times(1).WillOnce(Return(0));
-
-	EXPECT_NE(-1, sender_mock->send("from", "to", "sendValidatedMail_UT", "sendValidatedMail_UT"));
 }
 #endif
