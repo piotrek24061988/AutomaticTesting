@@ -1,4 +1,5 @@
-Libre office documentation available in following directory: https://github.com/piotrek24061988/AutomaticTesting/tree/master/module1/doc
+Libre office documentation available in following directory: 
+https://github.com/piotrek24061988/AutomaticTesting/tree/master/module1/doc
 
 preconditions:
 1) Linux OS
