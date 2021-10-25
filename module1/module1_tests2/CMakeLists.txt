@@ -11,7 +11,7 @@ set(CPP_UNIT_RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/../cppunit)
 ExternalProject_Add(cppunit
     SOURCE_DIR ${CPP_UNIT_RELATIVE}/src
     UPDATE_COMMAND ${CPP_UNIT_RELATIVE}/autogen.sh
-    CONFIGURE_COMMAND ${CPP_UNIT_RELATIVE}/configure CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER} --prefix=${CMAKE_INSTALL_PREFIX}
+    CONFIGURE_COMMAND ${CPP_UNIT_RELATIVE}/configure CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER}
     BUILD_COMMAND make
     INSTALL_COMMAND make install)
 
@@ -25,13 +25,15 @@ set(TESTS_HELPER ${CMAKE_CURRENT_SOURCE_DIR}/../tests_helper)
 include_directories(${TESTS_HELPER}/public)
 
 add_library(cppunit_shared SHARED IMPORTED GLOBAL)
-set_property(TARGET cppunit_shared PROPERTY IMPORTED_LOCATION ${CMAKE_INSTALL_PREFIX}/lib/libcppunit.so)
+set_property(TARGET cppunit_shared PROPERTY IMPORTED_LOCATION ${DESTDIR}/usr/local/lib/libcppunit.a)
 add_dependencies(cppunit_shared cppunit)
 add_library(cppunit_static STATIC IMPORTED GLOBAL)
-set_property(TARGET cppunit_static PROPERTY IMPORTED_LOCATION ${CMAKE_INSTALL_PREFIX}/lib/libcppunit.a)
+set_property(TARGET cppunit_shared PROPERTY IMPORTED_LOCATION ${DESTDIR}/usr/local/lib/libcppunit.a)
 add_dependencies(cppunit_static cppunit)
 
 include_directories(${CPP_UNIT_RELATIVE}/include)
+include_directories(${DESTDIR}/usr/local/include)
+
 
 set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/source)
 set(PRIVATE_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
@@ -47,6 +49,6 @@ foreach(testname ${TESTNAMES})
 
 	install(TARGETS ${testname}
     	EXPORT ${testname}-targets
-    	RUNTIME DESTINATION  bin COMPONENT bin)
+    	RUNTIME DESTINATION bin COMPONENT bin)
 
 endforeach(testname)

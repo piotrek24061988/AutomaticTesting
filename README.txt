@@ -20,7 +20,7 @@ configuration steps:
 build steps:
 1) mkdir out  - create cmake output directory
 2) cd out  - go to this directory
-3) cmake ../module1  - execute cmake to create project makefiles
+3) cmake -DDESTDIR=${PWD}/out ../module1  - execute cmake to create project makefiles
 4) make DESTDIR=${PWD}/out - build project
 5) make install DESTDIR=${PWD}/out  - install build output under out directory 
 
