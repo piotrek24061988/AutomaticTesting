@@ -40,7 +40,7 @@ compile:
         - cmake -DDESTDIR=${PWD}/out ../module1
         - make DESTDIR=${PWD}/out
         - make install DESTDIR=${PWD}/out
-	- export LD_LIBRARY_PATH=out/usr/local/lib/
+        - export LD_LIBRARY_PATH=out/usr/local/lib/
 
 test:
     override:
