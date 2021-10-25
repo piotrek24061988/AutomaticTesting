@@ -35,45 +35,48 @@ compile:
         ###################################################################
         # build and install destination project and unit tests            #       
         ###################################################################
-        - cmake ./module1
-        - sudo make
-        - sudo make install
+        - mkdir out
+        - cd out
+        - cmake -DDESTDIR=${PWD}/out ../module1
+        - make DESTDIR=${PWD}/out
+        - make install DESTDIR=${PWD}/out
+	- export LD_LIBRARY_PATH=out/usr/local/lib/
 
 test:
     override:
         ###################################################################
         # execute google unit tests for for compiled project              #       
         ###################################################################
-        - timeKeeper_test1
-        - smsDevice_test1
-        - smsSender_test1
-        - smsPlanner_test1
+        - ./out/usr/local/bin/timeKeeper_test1
+        - ./out/usr/local/bin/smsDevice_test1
+        - ./out/usr/local/bin/smsSender_test1
+        - ./out/usr/local/bin/smsPlanner_test1
         ###################################################################
         # execute cppunit unit tests for for compiled project             #       
         ###################################################################
-        - timeKeeper_test2
-        - smsDevice_test2
-        - smsSender_test2
-        - smsPlanner_test2
+        - ./out/usr/local/bin/timeKeeper_test2
+        - ./out/usr/local/bin/smsDevice_test2
+        - ./out/usr/local/bin/smsSender_test2
+        - ./out/usr/local/bin/smsPlanner_test2
         ###################################################################
         # build and install destination project and integration tests     #       
         ###################################################################
         - echo -e "add_definitions(-DIntegrationTests)\n$(cat module1/CMakeLists.txt)" > module1/CMakeLists.txt
         - rm -rf CMakeFiles CMakeCache.txt
-        - cmake ./module1
-        - sudo make
-        - sudo make install
+        - cmake -DDESTDIR=${PWD}/out ../module1
+        - make install DESTDIR=${PWD}/out
+        - export LD_LIBRARY_PATH=out/usr/local/lib/
         ###################################################################
         # execute google integration tests for for compiled project       #       
         ###################################################################
-        - timeKeeper_test1
-        - smsDevice_test1
-        - smsSender_test1
-        - smsPlanner_test1
+        - ./out/usr/local/bin/timeKeeper_test1
+        - ./out/usr/local/bin/smsDevice_test1
+        - ./out/usr/local/bin/smsSender_test1
+        - ./out/usr/local/bin/smsPlanner_test1
         ###################################################################
         # execute cppunit integration tests for for compiled project      #       
         ###################################################################
-        - timeKeeper_test2
-        - smsDevice_test2
-        - smsSender_test2
-        - smsPlanner_test2
+        - ./out/usr/local/bin/timeKeeper_test2
+        - ./out/usr/local/bin/smsDevice_test2
+        - ./out/usr/local/bin/smsSender_test2
+        - ./out/usr/local/bin/smsPlanner_test2
