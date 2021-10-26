@@ -32,7 +32,7 @@ jobs:
             ./out/usr/local/bin/timeKeeper_test2
             ./out/usr/local/bin/smsDevice_test2
             ./out/usr/local/bin/smsSender_test2
-            echo -e "add_definitions(-DIntegrationTests)\n$(cat module1/CMakeLists.txt)" > module1/CMakeLists.txt
+            echo -e "add_definitions(-DIntegrationTests)\n$(cat ../module1/CMakeLists.txt)" > ../module1/CMakeLists.txt
             rm -rf CMakeFiles CMakeCache.txt
             cmake -DDESTDIR=${PWD}/out2 ../module1
             make install DESTDIR=${PWD}/out2
