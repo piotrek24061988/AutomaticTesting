@@ -22,7 +22,7 @@ jobs:
             git submodule update --init --recursive
             mkdir out
             cd out
-            cmake ./module1
+            cmake ../module1
             sudo make
             sudo make install
             export LD_LIBRARY_PATH=/usr/local/lib/
@@ -34,9 +34,9 @@ jobs:
             smsDevice_test2
             smsSender_test2
             smsPlanner_test2
-            echo -e "add_definitions(-DIntegrationTests)\n$(cat module1/CMakeLists.txt)" > module1/CMakeLists.txt
+            echo -e "add_definitions(-DIntegrationTests)\n$(cat ../module1/CMakeLists.txt)" > ../module1/CMakeLists.txt
             rm -rf CMakeFiles CMakeCache.txt
-            cmake ./module1
+            cmake ../module1
             sudo make
             sudo make install
             timeKeeper_test1
