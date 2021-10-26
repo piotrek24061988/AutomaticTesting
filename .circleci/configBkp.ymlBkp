@@ -1,0 +1,64 @@
+version: 2.1
+
+jobs:
+  automatic-testing:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: "install dependencies"
+          command: |
+            sudo apt-get update
+            sudo apt-get install cmake
+            sudo apt-get install autoconf
+            sudo apt-get install autotools-dev
+            sudo apt-get install libtool
+            sudo apt-get install sendmail
+            sudo apt-get install net-tools
+      - run:
+          name: "automatic testing"
+          command: |
+            git submodule update --init --recursive
+            mkdir out
+            cd out
+            cmake -DDESTDIR=${PWD}/out ../module1
+            make DESTDIR=${PWD}/out
+            make install DESTDIR=${PWD}/out
+            export LD_LIBRARY_PATH=out/usr/local/lib/
+            ulimit -c unlimited
+            ./out/usr/local/bin/timeKeeper_test1
+            ./out/usr/local/bin/smsDevice_test1
+            ./out/usr/local/bin/smsSender_test1
+            sudo ./out/usr/local/bin/smsPlanner_test1
+            ./out/usr/local/bin/timeKeeper_test2
+            ./out/usr/local/bin/smsDevice_test2
+            ./out/usr/local/bin/smsSender_test2
+            sudo ./out/usr/local/bin/smsPlanner_test2
+            echo -e "add_definitions(-DIntegrationTests)\n$(cat ../module1/CMakeLists.txt)" > ../module1/CMakeLists.txt
+            rm -rf CMakeFiles CMakeCache.txt
+            cmake -DDESTDIR=${PWD}/out ../module1
+            make install DESTDIR=${PWD}/out
+            ./out/usr/local/bin/timeKeeper_test1
+            ./out/usr/local/bin/smsDevice_test1
+            ./out/usr/local/bin/smsSender_test1
+            sudo ./out/usr/local/bin/smsPlanner_test1
+            ./out/usr/local/bin/timeKeeper_test2
+            ./out/usr/local/bin/smsDevice_test2
+            ./out/usr/local/bin/smsSender_test2
+            sudo ./out/usr/local/bin/smsPlanner_test2
+      - run:
+          command: |
+            sysctl kernel.core_pattern
+            sudo find . -name core.*
+            mkdir -p /tmp/core_dumps
+            cp ./out/core.* /tmp/core_dumps
+          when: on_fail
+      - store_artifacts:
+          path: /tmp/core_dumps
+
+workflows:
+  automatic-testing-workflow:
+    jobs:
+      - automatic-testing
+
