@@ -47,6 +47,13 @@ jobs:
             smsDevice_test2
             smsSender_test2
             smsPlanner_test2
+      - run:
+          command: |
+            mkdir -p /tmp/core_dumps
+            cp core.* /tmp/core_dumps
+          when: on_fail
+      - store_artifacts:
+          path: /tmp/core_dumps
 
 workflows:
   automatic-testing-workflow:
