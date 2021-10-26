@@ -16,6 +16,7 @@ jobs:
             sudo apt-get install libtool
             sudo apt-get install sendmail
             sudo apt-get install net-tools
+            sudo apt-get install gdb
       - run:
           name: "automatic testing"
           command: |
