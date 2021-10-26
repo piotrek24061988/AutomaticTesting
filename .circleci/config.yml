@@ -14,42 +14,44 @@ jobs:
             sudo apt-get install autoconf
             sudo apt-get install autotools-dev
             sudo apt-get install libtool
+            sudo apt-get install sendmail
+            sudo apt-get install net-tools
       - run:
           name: "automatic testing"
           command: |
             git submodule update --init --recursive
             mkdir out
             cd out
-            cmake ../module1
-            sudo make
-            sudo make install
-            export LD_LIBRARY_PATH=/usr/local/lib/
+            cmake -DDESTDIR=${PWD}/out ../module1
+            make DESTDIR=${PWD}/out
+            make install DESTDIR=${PWD}/out
+            export LD_LIBRARY_PATH=out/usr/local/lib/
             ulimit -c unlimited
-            timeKeeper_test1
-            smsDevice_test1
-            smsSender_test1
-            smsPlanner_test1
-            timeKeeper_test2
-            smsDevice_test2
-            smsSender_test2
-            smsPlanner_test2
+            ./out/usr/local/bin/timeKeeper_test1
+            ./out/usr/local/bin/smsDevice_test1
+            ./out/usr/local/bin/smsSender_test1
+            ./out/usr/local/bin/smsPlanner_test1
+            ./out/usr/local/bin/timeKeeper_test2
+            ./out/usr/local/bin/smsDevice_test2
+            ./out/usr/local/bin/smsSender_test2
+            ./out/usr/local/bin/smsPlanner_test2
             echo -e "add_definitions(-DIntegrationTests)\n$(cat ../module1/CMakeLists.txt)" > ../module1/CMakeLists.txt
             rm -rf CMakeFiles CMakeCache.txt
-            cmake ../module1
-            sudo make
-            sudo make install
-            timeKeeper_test1
-            smsDevice_test1
-            smsSender_test1
-            smsPlanner_test1
-            timeKeeper_test2
-            smsDevice_test2
-            smsSender_test2
-            smsPlanner_test2
+            cmake -DDESTDIR=${PWD}/out ../module1
+            make install DESTDIR=${PWD}/out
+            ./out/usr/local/bin/timeKeeper_test1
+            ./out/usr/local/bin/smsDevice_test1
+            ./out/usr/local/bin/smsSender_test1
+            ./out/usr/local/bin/smsPlanner_test1
+            ./out/usr/local/bin/timeKeeper_test2
+            ./out/usr/local/bin/smsDevice_test2
+            ./out/usr/local/bin/smsSender_test2
+            ./out/usr/local/bin/smsPlanner_test2
       - run:
           command: |
             sysctl kernel.core_pattern
-            sudo find / -name core.*
+            sudo find . -name core.*
+            sudo find ./out/usr/local/bin/ -name core.*
             mkdir -p /tmp/core_dumps
             cp core.* /tmp/core_dumps
           when: on_fail

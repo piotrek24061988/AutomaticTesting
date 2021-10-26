@@ -1,0 +1,63 @@
+version: 2.1
+
+jobs:
+  automatic-testing:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: "install dependencies"
+          command: |
+            sudo apt-get update
+            sudo apt-get install cmake
+            sudo apt-get install autoconf
+            sudo apt-get install autotools-dev
+            sudo apt-get install libtool
+      - run:
+          name: "automatic testing"
+          command: |
+            git submodule update --init --recursive
+            mkdir out
+            cd out
+            cmake ../module1
+            sudo make
+            sudo make install
+            export LD_LIBRARY_PATH=/usr/local/lib/
+            ulimit -c unlimited
+            timeKeeper_test1
+            smsDevice_test1
+            smsSender_test1
+            smsPlanner_test1
+            timeKeeper_test2
+            smsDevice_test2
+            smsSender_test2
+            smsPlanner_test2
+            echo -e "add_definitions(-DIntegrationTests)\n$(cat ../module1/CMakeLists.txt)" > ../module1/CMakeLists.txt
+            rm -rf CMakeFiles CMakeCache.txt
+            cmake ../module1
+            sudo make
+            sudo make install
+            timeKeeper_test1
+            smsDevice_test1
+            smsSender_test1
+            smsPlanner_test1
+            timeKeeper_test2
+            smsDevice_test2
+            smsSender_test2
+            smsPlanner_test2
+      - run:
+          command: |
+            sysctl kernel.core_pattern
+            sudo find / -name core.*
+            mkdir -p /tmp/core_dumps
+            cp core.* /tmp/core_dumps
+          when: on_fail
+      - store_artifacts:
+          path: /tmp/core_dumps
+
+workflows:
+  automatic-testing-workflow:
+    jobs:
+      - automatic-testing
+
