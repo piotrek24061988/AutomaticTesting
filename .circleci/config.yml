@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   automatic-testing:
     docker:
-      - image: circleci/python:3.8.0
+      - image: cimg/base:stable
     steps:
       - checkout
       - run:
