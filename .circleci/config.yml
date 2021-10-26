@@ -51,9 +51,8 @@ jobs:
           command: |
             sysctl kernel.core_pattern
             sudo find . -name core.*
-            sudo find ./out/usr/local/bin/ -name core.*
             mkdir -p /tmp/core_dumps
-            cp core.* /tmp/core_dumps
+            cp ./out/core.* /tmp/core_dumps
           when: on_fail
       - store_artifacts:
           path: /tmp/core_dumps
