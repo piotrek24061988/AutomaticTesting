@@ -26,20 +26,14 @@ jobs:
             make DESTDIR=${PWD}/out
             make install DESTDIR=${PWD}/out
             export LD_LIBRARY_PATH=out/usr/local/lib/
-      - run:
-          name: "run google unit tests"
-          command: |
-            ./out/out/usr/local/bin/timeKeeper_test1
-            ./out/out/usr/local/bin/smsDevice_test1
-            ./out/out/usr/local/bin/smsSender_test1
-            ./out/out/usr/local/bin/smsPlanner_test1
-      - run:
-          name: "run cppunit unit tests"
-          command: |
-            ./out/out/usr/local/bin/timeKeeper_test2
-            ./out/out/usr/local/bin/smsDevice_test2
-            ./out/out/usr/local/bin/smsSender_test2
-            ./out/out/usr/local/bin/smsPlanner_test2
+            ./out/usr/local/bin/timeKeeper_test1
+            ./out/usr/local/bin/smsDevice_test1
+            ./out/usr/local/bin/smsSender_test1
+            ./out/usr/local/bin/smsPlanner_test1
+            ./out/usr/local/bin/timeKeeper_test2
+            ./out/usr/local/bin/smsDevice_test2
+            ./out/usr/local/bin/smsSender_test2
+            ./out/usr/local/bin/smsPlanner_test2
 
 
 # Invoke jobs via workflows
