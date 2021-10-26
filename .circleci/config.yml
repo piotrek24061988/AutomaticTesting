@@ -50,7 +50,8 @@ jobs:
       - run:
           command: |
             sysctl kernel.core_pattern
-            sudo find . -name core.*
+            find . -name core.*
+            gdb --batch -q ./out/out/usr/local/bin/smsPlanner_test1 ./out/core.* -ex bt
             mkdir -p /tmp/core_dumps
             cp ./out/core.* /tmp/core_dumps
             cp ./out/out/usr/local/bin/* /tmp/core_dumps
