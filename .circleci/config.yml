@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   automatic-testing:
     docker:
-      - image: cimg/base:stable
+      - image: circleci/python:3.8.0
     steps:
       - checkout
       - run:
@@ -29,9 +29,11 @@ jobs:
             ./out/usr/local/bin/timeKeeper_test1
             ./out/usr/local/bin/smsDevice_test1
             ./out/usr/local/bin/smsSender_test1
+            ./out/usr/local/bin/smsPlanner_test1
             ./out/usr/local/bin/timeKeeper_test2
             ./out/usr/local/bin/smsDevice_test2
             ./out/usr/local/bin/smsSender_test2
+            ./out/usr/local/bin/smsPlanner_test2
             echo -e "add_definitions(-DIntegrationTests)\n$(cat ../module1/CMakeLists.txt)" > ../module1/CMakeLists.txt
             rm -rf CMakeFiles CMakeCache.txt
             cmake -DDESTDIR=${PWD}/out2 ../module1
@@ -40,18 +42,12 @@ jobs:
             ./out2/usr/local/bin/timeKeeper_test1
             ./out2/usr/local/bin/smsDevice_test1
             ./out2/usr/local/bin/smsSender_test1
+            ./out2/usr/local/bin/smsPlanner_test1
             ./out2/usr/local/bin/timeKeeper_test2
             ./out2/usr/local/bin/smsDevice_test2
             ./out2/usr/local/bin/smsSender_test2
-            ./out/usr/local/bin/smsPlanner_test1
-            ./out/usr/local/bin/smsPlanner_test2
-            ./out2/usr/local/bin/smsPlanner_test1
             ./out2/usr/local/bin/smsPlanner_test2
 
-#./out/usr/local/bin/smsPlanner_test1
-#./out/usr/local/bin/smsPlanner_test2
-#./out2/usr/local/bin/smsPlanner_test1
-#./out2/usr/local/bin/smsPlanner_test2
 workflows:
   automatic-testing-workflow:
     jobs:
