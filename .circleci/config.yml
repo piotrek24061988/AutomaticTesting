@@ -14,6 +14,8 @@ jobs:
             sudo apt-get install autoconf
             sudo apt-get install autotools-dev
             sudo apt-get install libtool
+            sudo apt-get install sendmail
+            sudo apt-get install net-tools
       - run:
           name: "automatic testing"
           command: |
@@ -38,7 +40,7 @@ jobs:
             ./out2/usr/local/bin/timeKeeper_test1
             ./out2/usr/local/bin/smsDevice_test1
             ./out2/usr/local/bin/smsSender_test1
-	    ./out2/usr/local/bin/smsPlanner_test1
+            ./out2/usr/local/bin/smsPlanner_test1
             ./out2/usr/local/bin/timeKeeper_test2
             ./out2/usr/local/bin/smsDevice_test2
             ./out2/usr/local/bin/smsSender_test2
