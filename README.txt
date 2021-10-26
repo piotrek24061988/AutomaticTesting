@@ -24,7 +24,7 @@ build steps:
 4) make DESTDIR=${PWD}/out - build project
 5) make install DESTDIR=${PWD}/out  - install build output under out directory 
 
-post build steps
+post build steps:
 1) export LD_LIBRARY_PATH=out/usr/local/lib/  - export dynamic libraries from project build output
 2) ./out/usr/local/bin/timeKeeper_test1  - execute tests for timeKeeper with googletest or
    ./out/usr/local/bin/timeKeeper_test2  - execute tests for timeKeeper with cppunit
@@ -37,3 +37,7 @@ post build steps
 6) lcov --rc lcov_branch_coverage=1 --capture --directory $PWD --output-file coverage.info  - generate code coverage output file
 7) genhtml --rc lcov_branch_coverage=1 coverage.info --output-directory outhtml  - convert code coverage output file to html file
 8) firefox outhtml/index.html  - open html code coverage output file in web browser
+
+steps to be done:
+1) fix smsPlanner core dump
+2) change naked ptrs to smart ptrs
