@@ -53,7 +53,7 @@ jobs:
             sudo find . -name core.*
             mkdir -p /tmp/core_dumps
             cp ./out/core.* /tmp/core_dumps
-            cp ./out/usr/local/bin/* /tmp/core_dumps
+            cp ./out/out/usr/local/bin/* /tmp/core_dumps
           when: on_fail
       - store_artifacts:
           path: /tmp/core_dumps
