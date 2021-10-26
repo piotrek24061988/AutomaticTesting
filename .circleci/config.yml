@@ -2,10 +2,8 @@ version: 2.1
 
 jobs:
   automatic-testing:
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
       - image: cimg/base:stable
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - checkout
       - run:
@@ -17,7 +15,7 @@ jobs:
             sudo apt-get install autotools-dev
             sudo apt-get install libtool
       - run:
-          name: "install project"
+          name: "automatic testing"
           command: |
             git submodule update --init --recursive
             mkdir out
@@ -29,15 +27,12 @@ jobs:
             ./out/usr/local/bin/timeKeeper_test1
             ./out/usr/local/bin/smsDevice_test1
             ./out/usr/local/bin/smsSender_test1
-            ./out/usr/local/bin/smsPlanner_test1
             ./out/usr/local/bin/timeKeeper_test2
             ./out/usr/local/bin/smsDevice_test2
             ./out/usr/local/bin/smsSender_test2
             ./out/usr/local/bin/smsPlanner_test2
 
-
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+#./out/usr/local/bin/smsPlanner_test1
 workflows:
   automatic-testing-workflow:
     jobs:
