@@ -50,6 +50,7 @@ jobs:
             ./out/usr/local/bin/smsPlanner_test2
       - run:
           command: |
+            gcc --version
             sysctl kernel.core_pattern
             find . -name core.*
             export LD_LIBRARY_PATH=out/usr/local/lib/
