@@ -30,9 +30,10 @@ jobs:
             ./out/usr/local/bin/timeKeeper_test2
             ./out/usr/local/bin/smsDevice_test2
             ./out/usr/local/bin/smsSender_test2
-            ./out/usr/local/bin/smsPlanner_test2
+            
 
 #./out/usr/local/bin/smsPlanner_test1
+#./out/usr/local/bin/smsPlanner_test2
 workflows:
   automatic-testing-workflow:
     jobs:
