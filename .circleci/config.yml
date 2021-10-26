@@ -1,7 +1,7 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/circleci-demo-python-flask
+    working_directory: ~/circleci-demo-automatic-testing
     docker:
       - image: circleci/python:3.8.0
     steps:
@@ -10,9 +10,7 @@ jobs:
       - run: sudo chown -R circleci:circleci /usr/local/lib/python3.8/site-packages
       - run:
           command: |
-            sudo apt-get update
-            sudo apt-get install autoconf
-            sudo apt-get install autotools-dev
+            echo "Hello"
 
       - run:
           command: |
