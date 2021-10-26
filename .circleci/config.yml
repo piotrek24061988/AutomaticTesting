@@ -14,8 +14,6 @@ jobs:
             sudo apt-get install autoconf
             sudo apt-get install autotools-dev
             sudo apt-get install libtool
-            sudo apt-get install sendmail
-            sudo apt-get install net-tools
       - run:
           name: "automatic testing"
           command: |
@@ -26,6 +24,7 @@ jobs:
             sudo make
             sudo make install
             export LD_LIBRARY_PATH=/usr/local/lib/
+            ulimit -c unlimited
             timeKeeper_test1
             smsDevice_test1
             smsSender_test1
@@ -49,6 +48,7 @@ jobs:
             smsPlanner_test2
       - run:
           command: |
+            sysctl kernel.core_pattern
             mkdir -p /tmp/core_dumps
             cp /usr/local/bin/core.* /tmp/core_dumps
           when: on_fail
