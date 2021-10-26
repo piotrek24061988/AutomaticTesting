@@ -49,6 +49,7 @@ jobs:
       - run:
           command: |
             sysctl kernel.core_pattern
+            sudo find / -name core.*
             mkdir -p /tmp/core_dumps
             cp core.* /tmp/core_dumps
           when: on_fail
