@@ -30,11 +30,11 @@ jobs:
             ./out/usr/local/bin/timeKeeper_test1
             ./out/usr/local/bin/smsDevice_test1
             ./out/usr/local/bin/smsSender_test1
-            ./out/usr/local/bin/smsPlanner_test1
+            sudo ./out/usr/local/bin/smsPlanner_test1
             ./out/usr/local/bin/timeKeeper_test2
             ./out/usr/local/bin/smsDevice_test2
             ./out/usr/local/bin/smsSender_test2
-            ./out/usr/local/bin/smsPlanner_test2
+            sudo ./out/usr/local/bin/smsPlanner_test2
             echo -e "add_definitions(-DIntegrationTests)\n$(cat ../module1/CMakeLists.txt)" > ../module1/CMakeLists.txt
             rm -rf CMakeFiles CMakeCache.txt
             cmake -DDESTDIR=${PWD}/out ../module1
@@ -42,11 +42,11 @@ jobs:
             ./out/usr/local/bin/timeKeeper_test1
             ./out/usr/local/bin/smsDevice_test1
             ./out/usr/local/bin/smsSender_test1
-            ./out/usr/local/bin/smsPlanner_test1
+            sudo ./out/usr/local/bin/smsPlanner_test1
             ./out/usr/local/bin/timeKeeper_test2
             ./out/usr/local/bin/smsDevice_test2
             ./out/usr/local/bin/smsSender_test2
-            ./out/usr/local/bin/smsPlanner_test2
+            sudo ./out/usr/local/bin/smsPlanner_test2
       - run:
           command: |
             sysctl kernel.core_pattern
