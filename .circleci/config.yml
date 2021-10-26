@@ -27,11 +27,11 @@ jobs:
             timeKeeper_test1
             smsDevice_test1
             smsSender_test1
-            sudo smsPlanner_test1
+            sudo LD_LIBRARY_PATH=/usr/local/lib smsPlanner_test1
             timeKeeper_test2
             smsDevice_test2
             smsSender_test2
-            sudo smsPlanner_test2
+            sudo LD_LIBRARY_PATH=/usr/local/lib smsPlanner_test2
             echo -e "add_definitions(-DIntegrationTests)\n$(cat ../module1/CMakeLists.txt)" > ../module1/CMakeLists.txt
             rm -rf CMakeFiles CMakeCache.txt
             cmake ../module1
@@ -40,11 +40,11 @@ jobs:
             timeKeeper_test1
             smsDevice_test1
             smsSender_test1
-            sudo smsPlanner_test1
+            sudo LD_LIBRARY_PATH=/usr/local/lib smsPlanner_test1
             timeKeeper_test2
             smsDevice_test2
             smsSender_test2
-            sudo smsPlanner_test2
+            sudo LD_LIBRARY_PATH=/usr/local/lib smsPlanner_test2
 
 workflows:
   automatic-testing-workflow:
