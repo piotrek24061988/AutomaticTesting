@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   automatic-testing:
     docker:
-      - image: cimg/base:2020.04
+      - image: cimg/base:2019.08
     steps:
       - checkout
       - run:
@@ -14,17 +14,18 @@ jobs:
             sudo apt-get install autoconf
             sudo apt-get install autotools-dev
             sudo apt-get install libtool
-            sudo apt-get install sendmail
-            sudo apt-get install net-tools
-            sudo apt-get install gdb
-            sudo apt-get install clang-9
+#            sudo apt-get install sendmail
+#            sudo apt-get install net-tools
+#            sudo apt-get install gdb
+#            sudo apt-get install clang-9
+# -DCMAKE_C_COMPILER=clang-9 -DCMAKE_CXX_COMPILER=clang++-9
       - run:
           name: "automatic testing"
           command: |
             git submodule update --init --recursive
             mkdir out
             cd out
-            cmake -DDESTDIR=${PWD}/out ../module1 -DCMAKE_C_COMPILER=clang-9 -DCMAKE_CXX_COMPILER=clang++-9
+            cmake -DDESTDIR=${PWD}/out ../module1
             make DESTDIR=${PWD}/out
             make install DESTDIR=${PWD}/out
             export LD_LIBRARY_PATH=out/usr/local/lib/
