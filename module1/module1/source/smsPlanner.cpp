@@ -39,14 +39,15 @@ bool smsPlanner::cancelDelivery(int curId)
 //Send all added sms's.
 bool smsPlanner::sendAll()
 {
-	for(auto it = contents.begin(); it != contents.end(); it++)
+	for(auto it = contents.begin(); it != contents.end(); )
 	{
 		if(!sd->send(it->second.first, it->second.second))
 		{
 			return false;
 		}
-		contents.erase(it);
-                ids.erase(std::remove(ids.begin(), ids.end(), it->first), ids.end());
+		ids.erase(std::remove(ids.begin(), ids.end(), it->first), ids.end());
+		auto itErase = it++;
+		contents.erase(itErase);
 	}
 	return true;
 }
