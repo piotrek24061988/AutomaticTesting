@@ -16,7 +16,6 @@ jobs:
             sudo apt-get install libtool
             sudo apt-get install lcov
             sudo apt-get install cppcheck
-#            sudo apt-get install valgrind
 #dont install net-tools and sendmail because they crash circleci
       - run:
           name: "Run unit tests"
@@ -87,6 +86,7 @@ jobs:
       - run:
           name: "Dynamic code analysis"
           command: |
+            sudo apt-get install valgrind
             cd out
             export LD_LIBRARY_PATH=out/usr/local/lib/
             mkdir dynamicAnalysis
