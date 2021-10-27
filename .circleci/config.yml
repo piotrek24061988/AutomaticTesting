@@ -17,13 +17,14 @@ jobs:
             sudo apt-get install sendmail
             sudo apt-get install net-tools
             sudo apt-get install gdb
+            sudo apt-get install clang-9
       - run:
           name: "automatic testing"
           command: |
             git submodule update --init --recursive
             mkdir out
             cd out
-            cmake -DDESTDIR=${PWD}/out ../module1
+            cmake -DDESTDIR=${PWD}/out ../module1 -DCMAKE_C_COMPILER=clang-9 -DCMAKE_CXX_COMPILER=clang++-9
             make DESTDIR=${PWD}/out
             make install DESTDIR=${PWD}/out
             export LD_LIBRARY_PATH=out/usr/local/lib/
