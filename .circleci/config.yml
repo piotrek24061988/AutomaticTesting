@@ -53,12 +53,13 @@ jobs:
             gcc --version
             sysctl kernel.core_pattern
             find . -name core.*
-            gdb --batch -q ./out/out/usr/local/bin/smsPlanner_test1 ./out/core.* -ex bt
             mkdir -p /tmp/core_dumps
             cp ./out/core.* /tmp/core_dumps
             cp ./out/out/usr/local/bin/* /tmp/core_dumps
             cp ./out/out/usr/local/lib/* /tmp/core_dumps
-            #gdb --batch -q ./out/out/usr/local/bin/smsPlanner_test1 ./out/core.* -ex 'set solib-search-path .' -ex bt
+            tar -zcvf archive.tar out
+            cp archive.tar /tmp/core_dumps
+            #gdb --batch -q ./out/out/usr/local/bin/smsPlanner_test1 ./out/core.* -ex 'set solib-search-path ./out/usr/local/lib' -ex bt
           when: on_fail
       - store_artifacts:
           path: /tmp/core_dumps
