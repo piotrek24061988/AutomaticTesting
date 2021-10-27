@@ -40,6 +40,7 @@ bool mailPlanner::cancelDelivery(int curId)
 }
 
 //Send all added mail's.
+//BUG to demonstrate testing beauty
 bool mailPlanner::sendAll()
 {
 	for(auto it = contents.begin(); it != contents.end(); it++)
