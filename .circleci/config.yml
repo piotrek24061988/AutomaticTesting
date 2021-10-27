@@ -50,16 +50,17 @@ jobs:
             ./out/usr/local/bin/smsPlanner_test2
       - run:
           command: |
-            gcc --version
-            sysctl kernel.core_pattern
-            find . -name core.*
-            mkdir -p /tmp/core_dumps
+            mkdir -p /tmp/output
             tar -zcvf archive.tar.gz out
-            cp archive.tar.gz /tmp/core_dumps
-            gdb --batch -q ./out/out/usr/local/bin/smsPlanner_test1 ./out/core.* -ex 'set solib-search-path ./out/usr/local/lib' -ex bt
-          when: on_fail
+            cp archive.tar.gz /tmp/output
+            #core dump analysis
+            #gcc --version
+            #sysctl kernel.core_pattern
+            #find . -name core.*
+            #gdb --batch -q ./out/out/usr/local/bin/smsPlanner_test1 ./out/core.* -ex 'set solib-search-path ./out/usr/local/lib' -ex bt
+          #when: on_fail
       - store_artifacts:
-          path: /tmp/core_dumps
+          path: /tmp/output
 
 workflows:
   automatic-testing-workflow:
