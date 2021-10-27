@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   automatic-testing:
     docker:
-      - image: cimg/base:2020.03
+      - image: cimg/base:2020.04
     steps:
       - checkout
       - run:
@@ -15,6 +15,7 @@ jobs:
             sudo apt-get install autotools-dev
             sudo apt-get install libtool
             sudo apt-get install lcov
+#dont install net-tools and sendmail because they crash circleci
       - run:
           name: "automated unit tests"
           command: |
@@ -43,6 +44,7 @@ jobs:
             rm -rf CMakeFiles CMakeCache.txt
             cmake -DDESTDIR=${PWD}/out2 ../module1
             make install DESTDIR=${PWD}/out2
+            export LD_LIBRARY_PATH=out2/usr/local/lib/
             ./out2/usr/local/bin/timeKeeper_test1
             ./out2/usr/local/bin/smsDevice_test1
             ./out2/usr/local/bin/smsSender_test1
@@ -56,7 +58,7 @@ jobs:
           name: "measure code coverage"
           command: |
             cd out
-            lcov --rc lcov_branch_coverage=1 --capture --directory $PWD --output-file coverage.info
+            lcov --rc lcov_branch_coverage=1 --capture --directory ${PWD} --output-file coverage.info
             genhtml --rc lcov_branch_coverage=1 coverage.info --output-directory outhtml
           when: always
       - run:
@@ -65,11 +67,6 @@ jobs:
             mkdir -p /tmp/output
             tar -zcvf archive.tar.gz out
             cp archive.tar.gz /tmp/output
-            ##core dump analysis
-            #gcc --version
-            #sysctl kernel.core_pattern
-            #find . -name core.*
-            #gdb --batch -q ./out/out/usr/local/bin/smsPlanner_test1 ./out/core.* -ex 'set solib-search-path ./out/usr/local/lib' -ex bt
           when: always
       - store_artifacts:
           path: /tmp/output
