@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   automatic-testing:
     docker:
-      - image: cimg/base:2020.04
+      - image: cimg/base:stable
     steps:
       - checkout
       - run:
@@ -81,7 +81,7 @@ jobs:
             cppcheck -I ../module1/module1/public ../module1/module1/source/smsSender.cpp --xml
             cppcheck -I ../module1/module1/public ../module1/module1/source/smsSender.cpp --xml > staticAnalysis/smsSender.xml 2>&1
             cppcheck -I ../module1/module1/public ../module1/module1/source/smsPlanner.cpp --xml
-            cppcheck -I ../module1/module1/public ../module1/module1/source/smsSender.cpp --xml > staticAnalysis/smsPlanner.xml 2>&1
+            cppcheck -I ../module1/module1/public ../module1/module1/source/smsPlanner.cpp --xml > staticAnalysis/smsPlanner.xml 2>&1
           when: always
       - run:
           name: "Dynamic code analysis"
