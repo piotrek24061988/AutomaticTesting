@@ -73,10 +73,15 @@ jobs:
           name: "Static code analysis"
           command: |
             cd out
+            mkdir staticAnalysis
             cppcheck -I ../module1/module1/public ../module1/module1/source/timeKeeper.cpp --xml
+            cppcheck -I ../module1/module1/public ../module1/module1/source/timeKeeper.cpp --xml > staticAnalysis/timeKeeper.xml 2>&1
             cppcheck -I ../module1/module1/public ../module1/module1/source/smsDevice.cpp --xml
+            cppcheck -I ../module1/module1/public ../module1/module1/source/smsDevice.cpp --xml > staticAnalysis/smsDevice.xml 2>&1
             cppcheck -I ../module1/module1/public ../module1/module1/source/smsSender.cpp --xml
+            cppcheck -I ../module1/module1/public ../module1/module1/source/smsSender.cpp --xml > staticAnalysis/smsSender.xml 2>&1
             cppcheck -I ../module1/module1/public ../module1/module1/source/smsPlanner.cpp --xml
+            cppcheck -I ../module1/module1/public ../module1/module1/source/smsSender.cpp --xml > staticAnalysis/smsPlanner.xml 2>&1
           when: always
       - run:
           name: "Collect output artifacts"
