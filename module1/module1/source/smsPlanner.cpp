@@ -46,9 +46,7 @@ bool smsPlanner::sendAll()
 			return false;
 		}
 		contents.erase(it);
-                auto a = std::find(ids.begin(), ids.end(), it->first);//
-                //ids.erase(std::remove(ids.begin(), ids.end(), it->first), ids.end());
-                ids.erase(a);//
+                ids.erase(std::remove(ids.begin(), ids.end(), it->first), ids.end());
 	}
 	return true;
 }
