@@ -16,6 +16,7 @@ jobs:
             sudo apt-get install libtool
             sudo apt-get install lcov
             sudo apt-get install cppcheck
+            sudo apt-get install valgrind
 #dont install net-tools and sendmail because they crash circleci
       - run:
           name: "Run unit tests"
@@ -82,6 +83,21 @@ jobs:
             cppcheck -I ../module1/module1/public ../module1/module1/source/smsSender.cpp --xml > staticAnalysis/smsSender.xml 2>&1
             cppcheck -I ../module1/module1/public ../module1/module1/source/smsPlanner.cpp --xml
             cppcheck -I ../module1/module1/public ../module1/module1/source/smsSender.cpp --xml > staticAnalysis/smsPlanner.xml 2>&1
+          when: always
+      - run:
+          name: "Dynamic code analysis"
+          command: |
+            cd out
+            export LD_LIBRARY_PATH=out/usr/local/lib/
+            mkdir dynamicAnalysis
+            valgrind ./out/usr/local/bin/timeKeeper_test1
+            valgrind ./out/usr/local/bin/timeKeeper_test1 > dynamicAnalysis/timeKeeper.txt 2>&1
+            valgrind ./out/usr/local/bin/smsDevice_test1
+            valgrind ./out/usr/local/bin/smsDevice_test1 > dynamicAnalysis/smsDevice.txt 2>&1
+            valgrind ./out/usr/local/bin/smsSender_test1
+            valgrind ./out/usr/local/bin/smsSender_test1 > dynamicAnalysis/smsSender.txt 2>&1
+            valgrind ./out/usr/local/bin/smsPlanner_test1
+            valgrind ./out/usr/local/bin/smsPlanner_test1 > dynamicAnalysis/smsPlanner.txt 2>&1
           when: always
       - run:
           name: "Collect output artifacts"
