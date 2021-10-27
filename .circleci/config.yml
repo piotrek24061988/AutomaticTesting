@@ -7,7 +7,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "install dependencies"
+          name: "Install dependencies"
           command: |
             sudo apt-get update
             sudo apt-get install cmake
@@ -17,7 +17,7 @@ jobs:
             sudo apt-get install lcov
 #dont install net-tools and sendmail because they crash circleci
       - run:
-          name: "automated unit tests"
+          name: "Run unit tests"
           command: |
             git submodule update --init --recursive
             mkdir out
@@ -37,7 +37,14 @@ jobs:
             ./out/usr/local/bin/smsPlanner_test2
           when: always
       - run:
-          name: "automated integration tests"
+          name: "Measure unit tests code coverage"
+          command: |
+            cd out
+            lcov --rc lcov_branch_coverage=1 --capture --directory ${PWD}/out --output-file coverageUT.info
+            genhtml --rc lcov_branch_coverage=1 coverageUT.info --output-directory outhtmlUT
+          when: always
+      - run:
+          name: "Run integration tests"
           command: |
             cd out
             echo -e "add_definitions(-DIntegrationTests)\n$(cat ../module1/CMakeLists.txt)" > ../module1/CMakeLists.txt
@@ -55,14 +62,14 @@ jobs:
             ./out2/usr/local/bin/smsPlanner_test2
           when: always
       - run:
-          name: "measure code coverage"
+          name: "Measure integration tests code coverage"
           command: |
             cd out
-            lcov --rc lcov_branch_coverage=1 --capture --directory ${PWD} --output-file coverage.info
-            genhtml --rc lcov_branch_coverage=1 coverage.info --output-directory outhtml
+            lcov --rc lcov_branch_coverage=1 --capture --directory ${PWD}/out2 --output-file coverageIT.info
+            genhtml --rc lcov_branch_coverage=1 coverageIT.info --output-directory outhtmlIT
           when: always
       - run:
-          name: "collect output"
+          name: "Collect output artifacts"
           command: |
             mkdir -p /tmp/output
             tar -zcvf archive.tar.gz out
