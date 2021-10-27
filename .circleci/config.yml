@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   automatic-testing:
     docker:
-      - image: cimg/base:stable-18.04
+      - image: cimg/base:2020.04
     steps:
       - checkout
       - run:
