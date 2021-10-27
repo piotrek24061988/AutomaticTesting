@@ -1,6 +1,6 @@
-#include "smsPlanner.hpp"
-
 #include <algorithm>
+
+#include "smsPlanner.hpp"
 
 smsPlanner::smsPlanner(timeKeeper * tk, smsSender * sd): tk(tk), sd(sd)
 {

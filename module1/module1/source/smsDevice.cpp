@@ -1,5 +1,6 @@
-#include "smsDevice.hpp"
 #include <iostream>
+
+#include "smsDevice.hpp"
 
 smsDevice::smsDevice()
 {

@@ -1,5 +1,6 @@
-#include "smsSender.hpp"
 #include <iostream>
+
+#include "smsSender.hpp"
 
 smsSender::smsSender(smsDevice * sd): sd(sd)
 {

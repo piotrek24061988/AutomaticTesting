@@ -1,5 +1,6 @@
-#include "timeKeeper.hpp"
 #include <iostream>
+
+#include "timeKeeper.hpp"
 
 timeKeeper::timeKeeper()
 {
