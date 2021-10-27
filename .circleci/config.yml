@@ -58,7 +58,7 @@ jobs:
             #sysctl kernel.core_pattern
             #find . -name core.*
             #gdb --batch -q ./out/out/usr/local/bin/smsPlanner_test1 ./out/core.* -ex 'set solib-search-path ./out/usr/local/lib' -ex bt
-          #when: on_fail
+          when: always
       - store_artifacts:
           path: /tmp/output
 
