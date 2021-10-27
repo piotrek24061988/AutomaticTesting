@@ -19,7 +19,7 @@ jobs:
             sudo apt-get install gdb
             sudo apt-get install lcov
       - run:
-          name: "automated tests"
+          name: "automated unit tests"
           command: |
             git submodule update --init --recursive
             mkdir out
@@ -37,18 +37,24 @@ jobs:
             ./out/usr/local/bin/smsDevice_test2
             ./out/usr/local/bin/smsSender_test2
             ./out/usr/local/bin/smsPlanner_test2
+          when: always
+      - run:
+          name: "automated integration tests"
+          command: |
+            cd out
             echo -e "add_definitions(-DIntegrationTests)\n$(cat ../module1/CMakeLists.txt)" > ../module1/CMakeLists.txt
             rm -rf CMakeFiles CMakeCache.txt
-            cmake -DDESTDIR=${PWD}/out ../module1
-            make install DESTDIR=${PWD}/out
-            ./out/usr/local/bin/timeKeeper_test1
-            ./out/usr/local/bin/smsDevice_test1
-            ./out/usr/local/bin/smsSender_test1
-            ./out/usr/local/bin/smsPlanner_test1
-            ./out/usr/local/bin/timeKeeper_test2
-            ./out/usr/local/bin/smsDevice_test2
-            ./out/usr/local/bin/smsSender_test2
-            ./out/usr/local/bin/smsPlanner_test2
+            cmake -DDESTDIR=${PWD}/out2 ../module1
+            make install DESTDIR=${PWD}/out2
+            ./out2/usr/local/bin/timeKeeper_test1
+            ./out2/usr/local/bin/smsDevice_test1
+            ./out2/usr/local/bin/smsSender_test1
+            ./out2/usr/local/bin/smsPlanner_test1
+            ./out2/usr/local/bin/timeKeeper_test2
+            ./out2/usr/local/bin/smsDevice_test2
+            ./out2/usr/local/bin/smsSender_test2
+            ./out2/usr/local/bin/smsPlanner_test2
+          when: always
       - run:
           name: "measure code coverage"
           command: |
