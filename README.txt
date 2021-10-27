@@ -39,5 +39,4 @@ post build steps:
 8) firefox outhtml/index.html  - open html code coverage output file in web browser
 
 steps to be done:
-1) fix smsPlanner core dump
-2) change naked ptrs to smart ptrs
+1) change naked ptrs to smart ptrs
