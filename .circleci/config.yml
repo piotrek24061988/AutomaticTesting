@@ -14,9 +14,6 @@ jobs:
             sudo apt-get install autoconf
             sudo apt-get install autotools-dev
             sudo apt-get install libtool
-            sudo apt-get install sendmail
-            sudo apt-get install net-tools
-            sudo apt-get install gdb
             sudo apt-get install lcov
       - run:
           name: "automated unit tests"
