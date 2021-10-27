@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   automatic-testing:
     docker:
-      - image: cimg/base:stable
+      - image: cimg/base:2021:10
     steps:
       - checkout
       - run:
@@ -57,9 +57,9 @@ jobs:
             cp ./out/core.* /tmp/core_dumps
             cp -r ./out/out/usr/local/bin/* /tmp/core_dumps
             cp -r ./out/out/usr/local/lib/* /tmp/core_dumps
-            tar -zcvf archive.tar out
+            tar -zcvf archive.tar.gz out
             cp archive.tar /tmp/core_dumps
-            #gdb --batch -q ./out/out/usr/local/bin/smsPlanner_test1 ./out/core.* -ex 'set solib-search-path ./out/usr/local/lib' -ex bt
+            gdb --batch -q ./out/out/usr/local/bin/smsPlanner_test1 ./out/core.* -ex 'set solib-search-path ./out/usr/local/lib' -ex bt
           when: on_fail
       - store_artifacts:
           path: /tmp/core_dumps
