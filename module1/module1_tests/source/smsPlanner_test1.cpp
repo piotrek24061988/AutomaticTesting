@@ -265,7 +265,7 @@ TEST_F(smsPlanner_test1, notCancelAfterSend)
 	EXPECT_CALL(*device_mock, send(_, _)).Times(1);
 	EXPECT_CALL(*device_mock, deInit()).Times(1);
 #else
-	EXPECT_CALL(*sender_mock, send((std::string("537240688"), std::string("Hello"))).Times(1).WillOnce(Return(true));
+	EXPECT_CALL(*sender_mock, send(std::string("537240688"), std::string("Hello"))).Times(1).WillOnce(Return(true));
 #endif
 
 	planner_mock->sendAll();
