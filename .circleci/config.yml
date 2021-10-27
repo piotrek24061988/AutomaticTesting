@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   automatic-testing:
     docker:
-      - image: cimg/base:2020.03
+      - image: cimg/base:2020.04
     steps:
       - checkout
       - run:
@@ -14,13 +14,12 @@ jobs:
             sudo apt-get install autoconf
             sudo apt-get install autotools-dev
             sudo apt-get install libtool
-#            sudo apt-get install sendmail
-#            sudo apt-get install net-tools
-#            sudo apt-get install gdb
-#            sudo apt-get install clang-9
-# -DCMAKE_C_COMPILER=clang-9 -DCMAKE_CXX_COMPILER=clang++-9
+            sudo apt-get install sendmail
+            sudo apt-get install net-tools
+            sudo apt-get install gdb
+            sudo apt-get install lcov
       - run:
-          name: "automatic testing"
+          name: "automated tests"
           command: |
             git submodule update --init --recursive
             mkdir out
@@ -51,11 +50,19 @@ jobs:
             ./out/usr/local/bin/smsSender_test2
             ./out/usr/local/bin/smsPlanner_test2
       - run:
+          name: "measure code coverage"
+          command: |
+            cd out
+            lcov --rc lcov_branch_coverage=1 --capture --directory $PWD --output-file coverage.info
+            genhtml --rc lcov_branch_coverage=1 coverage.info --output-directory outhtml
+          when: always
+      - run:
+          name: "collect output"
           command: |
             mkdir -p /tmp/output
             tar -zcvf archive.tar.gz out
             cp archive.tar.gz /tmp/output
-            #core dump analysis
+            ##core dump analysis
             #gcc --version
             #sysctl kernel.core_pattern
             #find . -name core.*
@@ -68,4 +75,3 @@ workflows:
   automatic-testing-workflow:
     jobs:
       - automatic-testing
-
