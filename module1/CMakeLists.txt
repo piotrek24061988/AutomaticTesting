@@ -4,7 +4,7 @@ set(MODULE1 module1)
 add_subdirectory(${MODULE1} ${CMAKE_BINARY_DIR}/cmake/${MODULE1})
 
 #enable IntegrationTests flag for integration tests, otherwise unit tests enabled by default
-add_definitions(-DIntegrationTests)
+#add_definitions(-DIntegrationTests)
 
 #tests written based on googletest and googlemock
 set(MODULE1_TESTS module1_tests)
