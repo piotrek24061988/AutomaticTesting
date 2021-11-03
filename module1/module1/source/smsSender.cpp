@@ -2,7 +2,7 @@
 
 #include "smsSender.hpp"
 
-smsSender::smsSender(smsDevice * sd): sd(sd)
+smsSender::smsSender(std::shared_ptr<smsDevice> sd): sd(sd)
 {
 }
 

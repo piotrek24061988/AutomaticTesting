@@ -2,7 +2,7 @@
 
 #include "smsPlanner.hpp"
 
-smsPlanner::smsPlanner(timeKeeper * tk, smsSender * sd): tk(tk), sd(sd)
+smsPlanner::smsPlanner(std::shared_ptr<timeKeeper> tk, std::shared_ptr<smsSender> sd): tk(tk), sd(sd)
 {
 	id = 0;
 }

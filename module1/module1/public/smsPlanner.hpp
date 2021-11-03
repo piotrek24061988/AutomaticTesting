@@ -6,6 +6,7 @@
 #include <vector>
 #include <map>
 #include <utility>
+#include <memory>
 
 #include "timeKeeper.hpp"
 #include "smsSender.hpp"
@@ -13,7 +14,7 @@
 class smsPlanner
 {
 public:
-	smsPlanner(timeKeeper * tk, smsSender * sd);
+	smsPlanner(std::shared_ptr<timeKeeper> tk, std::shared_ptr<smsSender> sd);
 	~smsPlanner();
 
 	//Add new delivery and return delivery ID or -1 if error.
@@ -28,8 +29,8 @@ private:
 	std::vector<int> ids;
 	std::map<int, std::pair<std::string, std::string>> contents;
 	
-	timeKeeper * tk;
-	smsSender * sd;
+	std::shared_ptr<timeKeeper> tk;
+	std::shared_ptr<smsSender> sd;
 };
 
 #endif //_smsPlanner_hpp

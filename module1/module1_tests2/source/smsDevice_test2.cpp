@@ -106,11 +106,11 @@ void smsDevice_test2::sendSmsWithDeinit()
 int main(int argc, char * argv[])
 {
 	// Get the top level suite from regitry
-	std::shared_ptr<CppUnit::Test> suite(CppUnit::TestFactoryRegistry::getRegistry().makeTest());
+	std::unique_ptr<CppUnit::Test> suite(CppUnit::TestFactoryRegistry::getRegistry().makeTest());
 
 	// Adds thetest to the list of test to run
 	CppUnit::TextUi::TestRunner runner;
-	runner.addTest(suite.get());
+	runner.addTest(suite.release());
 
 	//Run the tests
 	return runner.run() ? 0 : -1;

@@ -9,6 +9,8 @@
 
 #include "smsDevice_mock.hpp"
 
+#include <memory>
+
 using ::testing::Ge;
 using ::testing::NotNull;
 using ::testing::Return;
@@ -45,51 +47,39 @@ public:
 #endif
 	CPPUNIT_TEST_SUITE_END();
 
-	smsSender * sender;
-	smsSender * sender_mock;
+	std::unique_ptr<smsSender> sender;
+	std::unique_ptr<smsSender> sender_mock;
 
-	smsDevice * device;
-	smsDevice_mock * device_mock;
+	std::shared_ptr<smsDevice> device;
+	std::shared_ptr<smsDevice_mock> device_mock;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(smsSender_test2);
 
 void smsSender_test2::setUp()
 {
-	device = NULL;
-	device = new smsDevice();
-	sender = NULL;
-	sender = new smsSender(device);
+	if(!device)
+	{
+		device = std::make_shared<smsDevice>();
+	}
+	if(!sender)
+	{
+		sender = std::make_unique<smsSender>(device);
+	}
 
-	device_mock = NULL;
-	device_mock = new smsDevice_mock();
-	sender_mock = NULL;
-	sender_mock = new smsSender(device_mock);
+	if(!device_mock)
+	{
+		device_mock = std::make_shared<smsDevice_mock>();
+	}
+	if(!sender_mock)
+	{
+		sender_mock = std::make_unique<smsSender>(device_mock);
+	}
 }
 
 void smsSender_test2::tearDown()
 {
-	if(sender)
-	{
-		delete sender;
-		sender = NULL;
-	}
-	if(device)
-	{
-		delete device;
-		device = NULL;
-	}
-
-	if(sender_mock)
-	{
-		delete sender_mock;
-		sender_mock = NULL;		
-	}	
-	if(device_mock)
-	{
-		delete device_mock;
-		device_mock = NULL;
-	}
+	//smart_ptr used so no need to clean anything
 }
 
 void smsSender_test2::sendValidatedSms()
@@ -99,8 +89,8 @@ void smsSender_test2::sendValidatedSms()
 	EXPECT_CALL(*device_mock, send(std::string("537240688"), std::string("Hello"))).Times(1);
 	EXPECT_CALL(*device_mock, deInit()).Times(1);
 #else
-        EXPECT_CALL(*device_mock, init()).Times(1).WillOnce(Return(true));
-        EXPECT_CALL(*device_mock, send(std::string("537240688"), std::string("Hello"))).Times(1).WillOnce(Return(true));
+  EXPECT_CALL(*device_mock, init()).Times(1).WillOnce(Return(true));
+  EXPECT_CALL(*device_mock, send(std::string("537240688"), std::string("Hello"))).Times(1).WillOnce(Return(true));
 	EXPECT_CALL(*device_mock, deInit()).Times(1).WillOnce(Return(true));
 #endif
 
@@ -111,7 +101,7 @@ void smsSender_test2::sendValidatedSms()
 #ifndef IntegrationTests
 void smsSender_test2::sendValidatedSmsInitError()
 {
-        EXPECT_CALL(*device_mock, init()).Times(1).WillOnce(Return(false));
+  EXPECT_CALL(*device_mock, init()).Times(1).WillOnce(Return(false));
 
 	CPPUNIT_ASSERT(!sender_mock->send(std::string("537240688"), std::string("Hello")));
 }
@@ -121,8 +111,8 @@ void smsSender_test2::sendValidatedSmsInitError()
 #ifndef IntegrationTests
 void smsSender_test2::sendValidatedSmsSendError()
 {
-        EXPECT_CALL(*device_mock, init()).Times(1).WillOnce(Return(true));
-        EXPECT_CALL(*device_mock, send(std::string("537240688"), std::string("Hello"))).Times(1).WillOnce(Return(false));
+  EXPECT_CALL(*device_mock, init()).Times(1).WillOnce(Return(true));
+  EXPECT_CALL(*device_mock, send(std::string("537240688"), std::string("Hello"))).Times(1).WillOnce(Return(false));
 
 	CPPUNIT_ASSERT(!sender_mock->send(std::string("537240688"), std::string("Hello")));
 }
@@ -132,8 +122,8 @@ void smsSender_test2::sendValidatedSmsSendError()
 #ifndef IntegrationTests
 void smsSender_test2::sendValidatedSmsDeinitError()
 {
-        EXPECT_CALL(*device_mock, init()).Times(1).WillOnce(Return(true));
-        EXPECT_CALL(*device_mock, send(std::string("537240688"), std::string("Hello"))).Times(1).WillOnce(Return(true));
+  EXPECT_CALL(*device_mock, init()).Times(1).WillOnce(Return(true));
+  EXPECT_CALL(*device_mock, send(std::string("537240688"), std::string("Hello"))).Times(1).WillOnce(Return(true));
 	EXPECT_CALL(*device_mock, deInit()).Times(1).WillOnce(Return(false));
 
 	CPPUNIT_ASSERT(!sender_mock->send(std::string("537240688"), std::string("Hello")));
@@ -143,11 +133,11 @@ void smsSender_test2::sendValidatedSmsDeinitError()
 int main(int argc, char * argv[])
 {
 	// Get the top level suite from regitry
-	CppUnit::Test * suite = CppUnit::TestFactoryRegistry::getRegistry().makeTest();
+	std::unique_ptr<CppUnit::Test> suite(CppUnit::TestFactoryRegistry::getRegistry().makeTest());
 
 	// Adds thetest to the list of test to run
 	CppUnit::TextUi::TestRunner runner;
-	runner.addTest(suite);
+	runner.addTest(suite.release());
 
 	//Run the tests
 	return runner.run() ? 0 : -1;

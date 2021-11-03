@@ -38,5 +38,10 @@ post build steps:
 7) genhtml --rc lcov_branch_coverage=1 coverage.info --output-directory outhtml  - convert code coverage output file to html file
 8) firefox outhtml/index.html  - open html code coverage output file in web browser
 
-steps to be done:
-1) change naked ptrs to smart ptrs
+steps to be done for owner:
+1) add doxygen documentation
+2) update whole uml documentation and presentations after changing raw pointers to smart pointers
+3) create system and software requirements for modules
+4) create tracebility for project
+5) create software tests based on requirements
+

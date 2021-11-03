@@ -12,6 +12,8 @@
 
 #include "coutRedirect.hpp"
 
+#include <memory>
+
 using ::testing::Ge;
 using ::testing::NotNull;
 using ::testing::Return;
@@ -22,81 +24,57 @@ class smsPlanner_test1 : public testing::Test
 protected:
 	virtual void SetUp()
 	{
-		keeper = NULL;
-		keeper = new timeKeeper();
-		device = NULL;
-		device = new smsDevice();
-		sender = NULL;
-		sender = new smsSender(device);
-		planner = NULL;
-		planner = new smsPlanner(keeper, sender);
+		if(!keeper)
+		{
+			keeper = std::make_shared<timeKeeper>();
+		}
+		if(!device)
+		{
+			device = std::make_shared<smsDevice>();
+		}
+		if(!sender)
+		{
+			sender = std::make_shared<smsSender>(device);
+		}
+		if(!planner)
+		{
+			planner = std::make_unique<smsPlanner>(keeper, sender);
+		}
 
-		keeper_mock = NULL;
-		keeper_mock = new timeKeeper_mock();
-		device_mock = NULL;
-		device_mock = new smsDevice_mock();
-		sender_mock = NULL;
-		sender_mock = new smsSender_mock(device_mock);
-		planner_mock = NULL;
-		planner_mock = new smsPlanner(keeper_mock, sender_mock);
+		if(!keeper_mock)
+		{
+			keeper_mock = std::make_shared<timeKeeper_mock>();
+		}
+		if(!device_mock)
+		{
+			device_mock = std::make_shared<smsDevice_mock>();
+		}
+		if(!sender_mock)
+		{
+			sender_mock = std::make_shared<smsSender_mock>(device_mock);
+		}
+		if(!planner_mock)
+		{
+			planner_mock = std::make_unique<smsPlanner>(keeper_mock, sender_mock);
+		}
 	} 
 
 	virtual void TearDown()
 	{
-		if(planner)
-		{
-			delete planner;
-			planner = NULL;
-		}
-		if(keeper)
-		{
-			delete keeper;
-			keeper = NULL;
-		}
-		if(sender)
-		{
-			delete sender;
-			sender = NULL;
-		}
-		if(device)
-		{
-			delete device;
-			device = NULL;
-		}
-
-		if(planner_mock)
-		{
-			delete planner_mock;
-			planner_mock = NULL;
-		}
-		if(keeper_mock)
-		{
-			delete keeper_mock;
-			keeper_mock = NULL;
-		}
-		if(sender_mock)
-		{
-			delete sender_mock;
-			sender_mock = NULL;
-		}
-		if(device_mock)
-		{
-			delete device_mock;
-			device_mock = NULL;
-		}
+		//smart_ptr used so no need to clean anything
 	}
 
-	smsPlanner * planner;
-	smsPlanner * planner_mock;
+	std::unique_ptr<smsPlanner> planner;
+	std::unique_ptr<smsPlanner> planner_mock;
 
-	timeKeeper * keeper;
-	timeKeeper_mock * keeper_mock;
+	std::shared_ptr<timeKeeper> keeper;
+	std::shared_ptr<timeKeeper_mock> keeper_mock;
 
-	smsSender * sender;
-	smsSender_mock * sender_mock;
+	std::shared_ptr<smsSender> sender;
+	std::shared_ptr<smsSender_mock> sender_mock;
 
-	smsDevice * device;
-	smsDevice_mock * device_mock;
+	std::shared_ptr<smsDevice> device;
+	std::shared_ptr<smsDevice_mock> device_mock;
 };
 
 //Insert sms to queue and check if was accepted and has a proper id in queue. 
@@ -105,7 +83,7 @@ TEST_F(smsPlanner_test1, addDeliveryNoError)
 #ifdef IntegrationTests
 	EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(1);
 #else
-        EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(1).WillOnce(Return(true));
+  EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(1).WillOnce(Return(true));
 #endif
 
 	EXPECT_NE(-1, planner_mock->addDelivery(std::string("537240688"), std::string("Hello"), time(NULL) + 60));
@@ -117,7 +95,7 @@ TEST_F(smsPlanner_test1, addDeliveryRetDiffId)
 #ifdef IntegrationTests
 	EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(2);
 #else
-        EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(2).WillRepeatedly(Return(true));
+  EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(2).WillRepeatedly(Return(true));
 #endif
 
 	int id = planner_mock->addDelivery(std::string("537240688"), std::string("Hello"), time(NULL) + 60);
@@ -130,7 +108,7 @@ TEST_F(smsPlanner_test1, cancelDeliveries)
 #ifdef IntegrationTests
 	EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(2);
 #else
-        EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(2).WillRepeatedly(Return(true));
+  EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(2).WillRepeatedly(Return(true));
 #endif
 
 	int id1 = planner_mock->addDelivery(std::string("537240688"), std::string("Hello"), time(NULL) + 60);
@@ -173,7 +151,7 @@ TEST_F(smsPlanner_test1, sendAllSuccess)
 	EXPECT_CALL(*device_mock, send(_, _)).Times(3);
 	EXPECT_CALL(*device_mock, deInit()).Times(3);
 #else
-        EXPECT_CALL(*sender_mock, send(_, _)).Times(3).WillRepeatedly(Return(true));
+  EXPECT_CALL(*sender_mock, send(_, _)).Times(3).WillRepeatedly(Return(true));
 #endif
 
 	EXPECT_TRUE(planner_mock->sendAll());
@@ -190,7 +168,7 @@ TEST_F(smsPlanner_test1, sendAllFail)
 	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 1"), time(NULL) + 60);
 	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 2"), time(NULL) + 60);
 
-        EXPECT_CALL(*sender_mock, send(_, _)).Times(2).WillOnce(Return(true)).WillOnce(Return(false));
+  EXPECT_CALL(*sender_mock, send(_, _)).Times(2).WillOnce(Return(true)).WillOnce(Return(false));
 
 	EXPECT_FALSE(planner_mock->sendAll());
 }
@@ -299,10 +277,10 @@ TEST_F(smsPlanner_test1, sendAllSuccess2WhiteBox)
 
 	std::string str = cR.getString();
 
-        EXPECT_TRUE( str.find("bool timeKeeper::getTimeValid(std::time_t curTime)") != std::string::npos);
-        EXPECT_TRUE( str.find("bool smsSender::send(std::string number, std::string message)") != std::string::npos);
-        EXPECT_TRUE( str.find("bool smsDevice::init()") != std::string::npos);
-        EXPECT_TRUE( str.find("bool smsSender::send(std::string number, std::string message)") != std::string::npos);
-        EXPECT_TRUE( str.find("bool smsDevice::deInit()") != std::string::npos);
+	EXPECT_TRUE( str.find("bool timeKeeper::getTimeValid(std::time_t curTime)") != std::string::npos);
+  EXPECT_TRUE( str.find("bool smsSender::send(std::string number, std::string message)") != std::string::npos);
+  EXPECT_TRUE( str.find("bool smsDevice::init()") != std::string::npos);
+  EXPECT_TRUE( str.find("bool smsSender::send(std::string number, std::string message)") != std::string::npos);
+  EXPECT_TRUE( str.find("bool smsDevice::deInit()") != std::string::npos);
 }
 #endif
