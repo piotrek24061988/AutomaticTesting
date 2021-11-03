@@ -3,7 +3,7 @@ cmake_minimum_required (VERSION 3.3)
 project(module1_tests)
 
 set(CMAKE_C_FLAGS "-pthread -lrt")
-set(CMAKE_CXX_FLAGS "-pthread -lrt -std=c++11")
+set(CMAKE_CXX_FLAGS "-pthread -lrt -std=c++17")
 
 #Add google mock/test engine
 set(GOOGLE_MOCK_RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/../googletest)

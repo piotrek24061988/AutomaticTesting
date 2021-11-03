@@ -4,25 +4,24 @@
 #include "timeKeeper.hpp"
 
 #include <ctime>
+#include <memory>
 
 class timeKeeper_test1 : public testing::Test
 {
 protected:
 	virtual void SetUp()
 	{
-		keeper = NULL;
-		keeper = new timeKeeper();
+		if(!keeper)
+		{
+			keeper = std::make_unique<timeKeeper>();
+		}
 	}
 	virtual void TearDown()
 	{
-		if(keeper)
-		{
-			delete keeper;
-			keeper = NULL;
-		}
+		//smart_ptr used so no need to clean anything
 	}
 
-	timeKeeper * keeper;
+	std::unique_ptr<timeKeeper> keeper;
 };
 
 #ifndef IntegrationTests

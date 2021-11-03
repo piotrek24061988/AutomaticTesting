@@ -5,6 +5,7 @@
 #include "timeKeeper.hpp"
 
 #include <ctime>
+#include <memory>
 
 class timeKeeper_test2 : public CppUnit::TestFixture
 {
@@ -29,24 +30,22 @@ private:
 #endif
 	CPPUNIT_TEST_SUITE_END();
 
-	timeKeeper * keeper;
+	std::unique_ptr<timeKeeper> keeper;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(timeKeeper_test2);
 
 void timeKeeper_test2::setUp()
 {
-	keeper = NULL;
-	keeper = new timeKeeper();
+	if(!keeper)
+	{
+		keeper = std::make_unique<timeKeeper>();
+	}
 }
 
 void timeKeeper_test2::tearDown()
 {
-	if(keeper)
-	{
-		delete keeper;
-		keeper = NULL;
-	}
+	//smart_ptr used so no need to clean anything
 }
 
 #ifndef IntegrationTests
@@ -66,11 +65,11 @@ void timeKeeper_test2::timeValidated()
 int main(int argc, char * argv[])
 {
 	// Get the top level suite from regitry
-	CppUnit::Test * suite = CppUnit::TestFactoryRegistry::getRegistry().makeTest();
+	std::shared_ptr<CppUnit::Test> suite(CppUnit::TestFactoryRegistry::getRegistry().makeTest());
 
 	// Adds thetest to the list of test to run
 	CppUnit::TextUi::TestRunner runner;
-	runner.addTest(suite);
+	runner.addTest(suite.get());
 
 	//Run the tests
 	return runner.run() ? 0 : -1;
