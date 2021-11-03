@@ -3,24 +3,24 @@
 
 #include "smsSender.hpp"
 
+#include <memory>
+
 class smsDevice_test1 : public testing::Test
 {
 protected:
 	virtual void SetUp()
 	{
-		device = NULL;
-		device = new smsDevice();
+		if(!device)
+		{
+			device = std::make_unique<smsDevice>();
+		}
 	}
 	virtual void TearDown()
 	{
-		if(device)
-		{
-			delete device;
-			device = NULL;
-		}
+		//smart_ptr used so no need to clean anything
 	}
 
-	smsDevice * device;
+	std::unique_ptr<smsDevice> device;
 };
 
 #ifndef IntegrationTests

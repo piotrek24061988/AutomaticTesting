@@ -4,6 +4,8 @@
 
 #include "smsSender.hpp"
 
+#include <memory>
+
 class smsDevice_test2 : public CppUnit::TestFixture
 {
 public:
@@ -45,24 +47,22 @@ public:
 #endif
 	CPPUNIT_TEST_SUITE_END();
 
-	smsDevice * device;
+	std::unique_ptr<smsDevice> device;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(smsDevice_test2);
 
 void smsDevice_test2::setUp()
 {
-	device = NULL;
-	device = new smsDevice();
+	if(!device)
+	{
+		device = std::make_unique<smsDevice>();
+	}
 }
 
 void smsDevice_test2::tearDown()
 {
-	if(device)
-	{
-		delete device;
-		device = NULL;
-	}
+	//smart_ptr used so no need to clean anything
 }
 
 #ifndef IntegrationTests
@@ -106,11 +106,11 @@ void smsDevice_test2::sendSmsWithDeinit()
 int main(int argc, char * argv[])
 {
 	// Get the top level suite from regitry
-	CppUnit::Test * suite = CppUnit::TestFactoryRegistry::getRegistry().makeTest();
+	std::shared_ptr<CppUnit::Test> suite(CppUnit::TestFactoryRegistry::getRegistry().makeTest());
 
 	// Adds thetest to the list of test to run
 	CppUnit::TextUi::TestRunner runner;
-	runner.addTest(suite);
+	runner.addTest(suite.get());
 
 	//Run the tests
 	return runner.run() ? 0 : -1;
