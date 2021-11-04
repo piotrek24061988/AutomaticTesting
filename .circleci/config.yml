@@ -17,6 +17,10 @@ jobs:
             sudo apt-get install lcov
             sudo apt-get install cppcheck
             sudo apt-get install valgrind
+            sudo apt-get install flex
+            sudo apt-get install bison
+            sudo apt-get install doxygen
+            sudo apt-get install graphviz
       - run:
           name: "Run unit tests"
           command: |
@@ -97,6 +101,12 @@ jobs:
             valgrind ./out/usr/local/bin/smsSender_test1 > dynamicAnalysis/smsSender.txt 2>&1
             valgrind ./out/usr/local/bin/smsPlanner_test1
             valgrind ./out/usr/local/bin/smsPlanner_test1 > dynamicAnalysis/smsPlanner.txt 2>&1
+          when: always
+      - run:
+          name: "Generate doxygen documentation"
+          command: |
+            cd module1/module1/
+            doxygen doxygenconf
           when: always
       - run:
           name: "Collect output artifacts"

@@ -39,9 +39,8 @@ post build steps:
 8) firefox outhtml/index.html  - open html code coverage output file in web browser
 
 steps to be done for owner:
-1) add doxygen documentation
-2) update whole uml documentation and presentations after changing raw pointers to smart pointers
-3) create system and software requirements for modules
-4) create tracebility for project
-5) create software tests based on requirements
+1) update whole uml documentation and presentations after changing raw pointers to smart pointers
+2) create system and software requirements for modules
+3) create tracebility for project
+4) create software tests based on requirements
 
