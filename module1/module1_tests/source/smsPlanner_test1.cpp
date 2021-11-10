@@ -151,7 +151,7 @@ TEST_F(smsPlanner_test1, sendAllSuccess)
 	EXPECT_CALL(*device_mock, send(_, _)).Times(3);
 	EXPECT_CALL(*device_mock, deInit()).Times(3);
 #else
-  EXPECT_CALL(*sender_mock, send(_, _)).Times(3).WillRepeatedly(Return(true));
+	EXPECT_CALL(*sender_mock, send(_, _)).Times(3).WillRepeatedly(Return(true));
 #endif
 
 	EXPECT_TRUE(planner_mock->sendAll());
@@ -168,7 +168,7 @@ TEST_F(smsPlanner_test1, sendAllFail)
 	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 1"), time(NULL) + 60);
 	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 2"), time(NULL) + 60);
 
-  	EXPECT_CALL(*sender_mock, send(_, _)).Times(2).WillOnce(Return(true)).WillOnce(Return(false));
+	EXPECT_CALL(*sender_mock, send(_, _)).Times(2).WillOnce(Return(true)).WillOnce(Return(false));
 
 	EXPECT_FALSE(planner_mock->sendAll());
 }
@@ -278,9 +278,9 @@ TEST_F(smsPlanner_test1, sendAllSuccess2WhiteBox)
 	std::string str = cR.getString();
 
 	EXPECT_TRUE( str.find("bool timeKeeper::getTimeValid(std::time_t curTime)") != std::string::npos);
-  	EXPECT_TRUE( str.find("bool smsSender::send(std::string number, std::string message)") != std::string::npos);
-  	EXPECT_TRUE( str.find("bool smsDevice::init()") != std::string::npos);
-  	EXPECT_TRUE( str.find("bool smsSender::send(std::string number, std::string message)") != std::string::npos);
-  	EXPECT_TRUE( str.find("bool smsDevice::deInit()") != std::string::npos);
+	EXPECT_TRUE( str.find("bool smsSender::send(std::string number, std::string message)") != std::string::npos);
+	EXPECT_TRUE( str.find("bool smsDevice::init()") != std::string::npos);
+	EXPECT_TRUE( str.find("bool smsSender::send(std::string number, std::string message)") != std::string::npos);
+	EXPECT_TRUE( str.find("bool smsDevice::deInit()") != std::string::npos);
 }
 #endif

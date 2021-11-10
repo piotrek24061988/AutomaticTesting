@@ -48,7 +48,6 @@ protected:
 	std::shared_ptr<smsDevice_mock> device_mock;
 };
 
-//@IntegrationTestsStartSWINT2
 TEST_F(smsSender_test1, sendValidatedSms)
 {
 #ifdef IntegrationTests
@@ -63,7 +62,6 @@ TEST_F(smsSender_test1, sendValidatedSms)
 
 	EXPECT_TRUE(sender_mock->send(std::string("537240688"), std::string("Hello")));
 }
-//@IntegrationTestsStopSWINT2
 
 //smsDevice initialization error simulation by mock. Only unit test.
 #ifndef IntegrationTests
