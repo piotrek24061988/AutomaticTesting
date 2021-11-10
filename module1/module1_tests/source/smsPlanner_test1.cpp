@@ -83,7 +83,7 @@ TEST_F(smsPlanner_test1, addDeliveryNoError)
 #ifdef IntegrationTests
 	EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(1);
 #else
-  EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(1).WillOnce(Return(true));
+ 	EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(1).WillOnce(Return(true));
 #endif
 
 	EXPECT_NE(-1, planner_mock->addDelivery(std::string("537240688"), std::string("Hello"), time(NULL) + 60));
@@ -95,7 +95,7 @@ TEST_F(smsPlanner_test1, addDeliveryRetDiffId)
 #ifdef IntegrationTests
 	EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(2);
 #else
-  EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(2).WillRepeatedly(Return(true));
+	EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(2).WillRepeatedly(Return(true));
 #endif
 
 	int id = planner_mock->addDelivery(std::string("537240688"), std::string("Hello"), time(NULL) + 60);
@@ -108,7 +108,7 @@ TEST_F(smsPlanner_test1, cancelDeliveries)
 #ifdef IntegrationTests
 	EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(2);
 #else
-  EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(2).WillRepeatedly(Return(true));
+	EXPECT_CALL(*keeper_mock, getTimeValid(_)).Times(2).WillRepeatedly(Return(true));
 #endif
 
 	int id1 = planner_mock->addDelivery(std::string("537240688"), std::string("Hello"), time(NULL) + 60);
@@ -168,7 +168,7 @@ TEST_F(smsPlanner_test1, sendAllFail)
 	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 1"), time(NULL) + 60);
 	planner_mock->addDelivery(std::string("537240688"), std::string("Hello 2"), time(NULL) + 60);
 
-  EXPECT_CALL(*sender_mock, send(_, _)).Times(2).WillOnce(Return(true)).WillOnce(Return(false));
+  	EXPECT_CALL(*sender_mock, send(_, _)).Times(2).WillOnce(Return(true)).WillOnce(Return(false));
 
 	EXPECT_FALSE(planner_mock->sendAll());
 }
@@ -278,9 +278,9 @@ TEST_F(smsPlanner_test1, sendAllSuccess2WhiteBox)
 	std::string str = cR.getString();
 
 	EXPECT_TRUE( str.find("bool timeKeeper::getTimeValid(std::time_t curTime)") != std::string::npos);
-  EXPECT_TRUE( str.find("bool smsSender::send(std::string number, std::string message)") != std::string::npos);
-  EXPECT_TRUE( str.find("bool smsDevice::init()") != std::string::npos);
-  EXPECT_TRUE( str.find("bool smsSender::send(std::string number, std::string message)") != std::string::npos);
-  EXPECT_TRUE( str.find("bool smsDevice::deInit()") != std::string::npos);
+  	EXPECT_TRUE( str.find("bool smsSender::send(std::string number, std::string message)") != std::string::npos);
+  	EXPECT_TRUE( str.find("bool smsDevice::init()") != std::string::npos);
+  	EXPECT_TRUE( str.find("bool smsSender::send(std::string number, std::string message)") != std::string::npos);
+  	EXPECT_TRUE( str.find("bool smsDevice::deInit()") != std::string::npos);
 }
 #endif

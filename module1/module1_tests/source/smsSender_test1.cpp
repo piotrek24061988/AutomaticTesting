@@ -48,6 +48,7 @@ protected:
 	std::shared_ptr<smsDevice_mock> device_mock;
 };
 
+//@IntegrationTestsStartSWINT2
 TEST_F(smsSender_test1, sendValidatedSms)
 {
 #ifdef IntegrationTests
@@ -55,19 +56,20 @@ TEST_F(smsSender_test1, sendValidatedSms)
 	EXPECT_CALL(*device_mock, send(std::string("537240688"), std::string("Hello"))).Times(1);
 	EXPECT_CALL(*device_mock, deInit()).Times(1);
 #else
-  EXPECT_CALL(*device_mock, init()).Times(1).WillOnce(Return(true));
-  EXPECT_CALL(*device_mock, send(std::string("537240688"), std::string("Hello"))).Times(1).WillOnce(Return(true));
+	EXPECT_CALL(*device_mock, init()).Times(1).WillOnce(Return(true));
+	EXPECT_CALL(*device_mock, send(std::string("537240688"), std::string("Hello"))).Times(1).WillOnce(Return(true));
 	EXPECT_CALL(*device_mock, deInit()).Times(1).WillOnce(Return(true));
 #endif
 
 	EXPECT_TRUE(sender_mock->send(std::string("537240688"), std::string("Hello")));
 }
+//@IntegrationTestsStopSWINT2
 
 //smsDevice initialization error simulation by mock. Only unit test.
 #ifndef IntegrationTests
 TEST_F(smsSender_test1, sendValidatedSmsInitError)
 {
-  EXPECT_CALL(*device_mock, init()).Times(1).WillOnce(Return(false));
+	EXPECT_CALL(*device_mock, init()).Times(1).WillOnce(Return(false));
 
 	EXPECT_FALSE(sender_mock->send(std::string("537240688"), std::string("Hello")));
 }
@@ -77,8 +79,8 @@ TEST_F(smsSender_test1, sendValidatedSmsInitError)
 #ifndef IntegrationTests
 TEST_F(smsSender_test1, sendValidatedSmsSendError)
 {
-  EXPECT_CALL(*device_mock, init()).Times(1).WillOnce(Return(true));
-  EXPECT_CALL(*device_mock, send(std::string("537240688"), std::string("Hello"))).Times(1).WillOnce(Return(false));
+	EXPECT_CALL(*device_mock, init()).Times(1).WillOnce(Return(true));
+	EXPECT_CALL(*device_mock, send(std::string("537240688"), std::string("Hello"))).Times(1).WillOnce(Return(false));
 
 	EXPECT_FALSE(sender_mock->send(std::string("537240688"), std::string("Hello")));
 }
@@ -88,8 +90,8 @@ TEST_F(smsSender_test1, sendValidatedSmsSendError)
 #ifndef IntegrationTests
 TEST_F(smsSender_test1, sendValidatedSmsDeinitError)
 {
-  EXPECT_CALL(*device_mock, init()).Times(1).WillOnce(Return(true));
-  EXPECT_CALL(*device_mock, send(std::string("537240688"), std::string("Hello"))).Times(1).WillOnce(Return(true));
+	EXPECT_CALL(*device_mock, init()).Times(1).WillOnce(Return(true));
+	EXPECT_CALL(*device_mock, send(std::string("537240688"), std::string("Hello"))).Times(1).WillOnce(Return(true));
 	EXPECT_CALL(*device_mock, deInit()).Times(1).WillOnce(Return(false));
 
 	EXPECT_FALSE(sender_mock->send(std::string("537240688"), std::string("Hello")));
