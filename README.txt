@@ -16,6 +16,7 @@ download steps:
 configuration steps:
 1) to build unit tests, just build
 2) to build integration tests, enable AutomaticTesting/module1/CMakeLists.txt IntegrationTests flag and then build 
+3) to build software tests, enable AutomaticTesting/module1/CMakeLists.txt IntegrationTests and SoftwareTests flag and then build 
 
 build steps:
 1) mkdir out  - create cmake output directory
