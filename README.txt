@@ -41,7 +41,3 @@ post build steps:
 
 steps to be done for owner:
 1) update whole uml documentation and presentations after changing raw pointers to smart pointers
-2) create system and software requirements for modules
-3) create tracebility for project
-4) create software tests based on requirements
-
